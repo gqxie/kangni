@@ -1,0 +1,2 @@
+# kangni
+a django project
