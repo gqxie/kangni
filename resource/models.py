@@ -19,7 +19,7 @@ class District(models.Model):
 
 
 class Position(models.Model):
-    name = models.CharField(max_length=128, verbose_name='安装位置', help_text='一个区域包含多个位置', unique=True, db_index=True)
+    name = models.CharField(max_length=128, verbose_name='安装位置', help_text='一个区域包含多个位置', unique=False, db_index=True)
     district = models.ForeignKey(District, on_delete=models.SET_NULL, blank=False, null=True, verbose_name='区域',
                                  db_index=True)
     create_time = models.DateTimeField(verbose_name='创建时间', auto_now_add=True)
@@ -28,9 +28,10 @@ class Position(models.Model):
     class Meta:
         verbose_name = "安装位置"
         verbose_name_plural = "安装位置"
+        unique_together = (('name', 'district'),)
 
     def __str__(self):
-        return self.name
+        return '%s %s' % (self.district.name,self.name)
 
 
 class CameraUseType(models.Model):
