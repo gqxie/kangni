@@ -88,8 +88,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',  # 或者使用 mysql.connector.django
         'NAME': 'kangni',
         'USER': 'root',
-        'PASSWORD': 'password',
-        'HOST':'127.0.0.1',
+        'PASSWORD': 'mychebao',
+        'HOST':'188.188.22.164',
         'PORT':'3306',
     }
 }
@@ -118,14 +118,10 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
 LANGUAGE_CODE = 'zh-hans'
-
 TIME_ZONE = 'Asia/Shanghai'
-
 USE_I18N = True
-
 USE_L10N = True
-
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -137,19 +133,24 @@ SIMPLEUI_ANALYSIS = True
 
 SIMPLEUI_ICON = {
     '综合管理': 'fas fa-desktop',
-    '摄像头管理': 'fas fa-video',
-    '员工管理': 'fas fa-user-tie',
-    '职务管理':'fas fa-user-secret',
-    '部门管理':'fas fa-university'
+    '摄像头': 'fas fa-video',
+    '员工': 'fas fa-user-tie',
+    '职务':'fas fa-user-secret',
+    '部门':'fas fa-university',
+    '区域':'fas fa-map-marked-alt',
+    '安装位置':'fas fa-map-marker-alt',
+    '事件':'fas fa-clock',
+    '事件类型':'far fa-clock',
+    '摄像头用途':'fas fa-cog'
 }
 
 SIMPLEUI_CONFIG = {
     'system_keep':True,
     'menus': [{
-        'name': '测试',
-        'icon': 'far fa-surprise',
+        'name': '统计',
+        'icon': 'fas fa-chart-line',
         'models': [{
-            'name': '图表测试',
+            'name': '图表',
             'url': 'log/',
             'icon': 'fas fa-chart-pie'
         }]
@@ -164,6 +165,6 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True # 关闭浏览器，则COOKIE失效
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-SIMPLEUI_LOGO = MEDIA_URL + 'logo.png'
+# SIMPLEUI_LOGO = MEDIA_URL + 'logo2.png'
 
 SIMPLEUI_HOME_INFO = False

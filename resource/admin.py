@@ -1,21 +1,23 @@
 import datetime
+import time
 
 from django.contrib import admin
 
 # Register your models here.
+from django.utils import timezone
 from django.utils.safestring import mark_safe
 from import_export import resources
 from import_export.admin import ImportExportActionModelAdmin
 
-from resource.models import Camera, Department, Title, Employe
-
+from resource.models import Camera, Department, Title, Employe, District, Position, CameraUseType, EventType, Event
 
 
 @admin.register(Title)
 class TitleAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name')
+    list_display = ('id', 'name', 'create_time')
     search_fields = ('name',)
     list_per_page = 10
+
 
 @admin.register(Department)
 class DepartmentAdmin(admin.ModelAdmin):
@@ -24,6 +26,7 @@ class DepartmentAdmin(admin.ModelAdmin):
     list_per_page = 10
     actions_on_top = True
 
+
 class ProxyResource(resources.ModelResource):
     class Meta:
         model = Camera
@@ -31,14 +34,40 @@ class ProxyResource(resources.ModelResource):
 
 @admin.register(Camera)
 class CameraAdmin(ImportExportActionModelAdmin):
+    def district(self, obj):
+        return obj.address.district.name
+
+    district.short_description = u'区域'
+
+    def full_online_time(self, obj):
+        return obj.online_time.strftime("%Y-%m-%d %H:%M:%S")
+
+    full_online_time.short_description = u'在线时间'
+
+    def full_create_time(self, obj):
+        return obj.create_time.strftime("%Y-%m-%d %H:%M:%S")
+
+    full_create_time.short_description = u'创建时间'
+
+    def state(self, obj):
+        online_time = obj.online_time
+        now = timezone.now()
+        duration = (now - online_time).seconds
+        state = u'在线' if duration < 60 else u'离线'
+        color = 'green' if state == u'在线' else 'red'
+        rst = mark_safe('<div style="color:%s" width="50px">%s</div>' % (color, state))
+        return rst
+
+    state.short_description = u'状态'
     resource_class = ProxyResource
-    list_display = ('id', 'name', 'useType', 'ip', 'address', 'create_time')
+    list_display = (
+        'id', 'name', 'useType', 'ip', 'username', 'password', 'district', 'address', 'state', 'full_online_time',
+        'full_create_time')
     search_fields = ('name', 'useType', 'address')
     list_per_page = 10
     list_filter = ('useType', 'address', 'create_time')
     list_display_links = ('name',)
-    list_editable = ('useType', 'ip', 'address')
-    # date_hierarchy = 'create_time'
+    list_editable = ('useType',)
 
 
 class EmployeResource(resources.ModelResource):
@@ -85,10 +114,81 @@ class EmployeAdmin(ImportExportActionModelAdmin):
     upload_img.short_description = u'头像'
     upload_img.allow_tags = True
     readonly_fields = ['upload_img']
-    list_display = ('id', 'name', 'gender', 'phone', 'birthday', 'department', 'title','upload_img', 'create_time')
+    list_display = ('id', 'name', 'gender', 'phone', 'birthday', 'department', 'title', 'upload_img', 'create_time')
     search_fields = ('name', 'idCard', 'department')
     list_per_page = 10
     raw_id_fields = ('department', 'title')
     list_filter = ('department', AgeListFilter)
     list_display_links = ('name',)
     list_editable = ('department', 'title', 'phone', 'birthday', 'gender')
+
+
+@admin.register(District)
+class DistrictAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'create_time')
+    search_fields = ('name',)
+    list_per_page = 10
+    list_display_links = ('name',)
+
+
+@admin.register(Position)
+class PositionAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'district', 'create_time')
+    search_fields = ('name', 'district')
+    list_per_page = 10
+    list_display_links = ('name',)
+    list_filter = ('district',)
+    list_editable = ('district',)
+
+
+@admin.register(CameraUseType)
+class CameraUseTypeAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'create_time')
+    search_fields = ('name',)
+    list_per_page = 10
+    list_display_links = ('name',)
+
+
+@admin.register(EventType)
+class EventTypeAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'create_time')
+    search_fields = ('name',)
+    list_per_page = 10
+    list_display_links = ('name',)
+
+
+class EventResource(resources.ModelResource):
+    class Meta:
+        model = Event
+
+
+@admin.register(Event)
+class EventAdmin(ImportExportActionModelAdmin):
+
+    def district(self, obj):
+        return obj.camera.address.district.name
+
+    district.short_description = u'区域'
+
+    def position(self, obj):
+        return obj.camera.address.name
+
+    position.short_description = u'位置'
+
+    def upload_img(self, obj):
+        try:
+            img = mark_safe('<img src="%s" width="50px" />' % (obj.photo.url,))
+        except Exception as e:
+            img = ''
+        return img
+
+    upload_img.short_description = u'照片'
+    upload_img.allow_tags = True
+    readonly_fields = ['upload_img']
+    resource_class = EventResource
+    list_display = ('id', 'employe', 'event_type', 'district', 'position', 'camera', 'upload_img', 'create_time')
+    search_fields = ('employe',)
+    list_per_page = 10
+    list_display_links = ('employe',)
+    list_filter = ('employe', 'event_type', 'camera')
+    list_editable = ('event_type', 'camera')

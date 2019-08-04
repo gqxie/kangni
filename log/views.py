@@ -1,5 +1,6 @@
 # Create your views here.
 
+from django.db import connection
 from django.shortcuts import render
 from example.commons import Faker
 from pyecharts import options as opts
@@ -12,13 +13,34 @@ def index(request):
 
 
 def bar():
-    bar = (
-        Bar()
-            .add_xaxis(["衬衫", "毛衣", "领带", "裤子", "风衣", "高跟鞋", "袜子"])
-            .add_yaxis("商家A", [114, 55, 27, 101, 125, 27, 105])
-            .add_yaxis("商家B", [57, 134, 137, 129, 145, 60, 49])
-            .set_global_opts(title_opts=opts.TitleOpts(title="某商场销售情况"))
-    )
+    cursor = connection.cursor()
+    cursor.execute("""select rem.`name`,revt.`name` eventType,count(*) cnt from resource_event rev LEFT JOIN
+        resource_employe rem on rev.employe_id = rem.id 
+        LEFT JOIN resource_eventtype revt on rev.event_type_id = revt.id
+        GROUP BY employe_id,event_type_id;""")
+    rows = cursor.fetchall()
+    name_list = []
+    event_type_list = []
+    for row in rows:
+        name = row[0]
+        if name not in name_list:
+            name_list.append(name)
+        event_type = row[1]
+        if event_type not in event_type_list:
+            event_type_list.append(event_type)
+
+    bar = Bar()
+    bar.add_xaxis(name_list)
+    for event_type in event_type_list:
+        tmp_list = [0 for i in range(len(name_list))]
+        for row in rows:
+            if event_type == row[1]:
+                index = name_list.index(row[0])
+                tmp_list[index] = row[2]
+
+        bar.add_yaxis(event_type, tmp_list)
+    bar.set_global_opts(title_opts=opts.TitleOpts(title="不规范行为统计"))
+    bar.set_global_opts(toolbox_opts=opts.ToolboxOpts(is_show=True))
     return bar.render_embed()
 
 
@@ -39,9 +61,9 @@ def geo() -> Geo:
 def pie_base() -> Pie:
     c = (
         Pie()
-        .add("", [list(z) for z in zip(Faker.choose(), Faker.values())])
-        .set_global_opts(title_opts=opts.TitleOpts(title="Pie-基本示例"))
-        .set_series_opts(label_opts=opts.LabelOpts(formatter="{b}: {c}"))
+            .add("", [list(z) for z in zip(Faker.choose(), Faker.values())])
+            .set_global_opts(title_opts=opts.TitleOpts(title="Pie-基本示例"))
+            .set_series_opts(label_opts=opts.LabelOpts(formatter="{b}: {c}"))
     )
     return c.render_embed()
 
@@ -53,6 +75,7 @@ def gauge_base() -> Gauge:
             .set_global_opts(title_opts=opts.TitleOpts(title="Gauge-基本示例"))
     )
     return c.render_embed()
+
 
 def wc():
     myWordCloud = WordCloud("绘制词云", width=1000, height=620)
