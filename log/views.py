@@ -39,8 +39,7 @@ def bar():
                 tmp_list[index] = row[2]
 
         bar.add_yaxis(event_type, tmp_list)
-    bar.set_global_opts(title_opts=opts.TitleOpts(title="不规范行为统计"))
-    bar.set_global_opts(toolbox_opts=opts.ToolboxOpts(is_show=True))
+    bar.set_global_opts(title_opts=opts.TitleOpts(title="不规范行为统计"),toolbox_opts=opts.ToolboxOpts(is_show=True))
     return bar.render_embed()
 
 
