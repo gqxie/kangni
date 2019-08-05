@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
@@ -26,7 +25,6 @@ SECRET_KEY = '4=llps01!0q77k_3tqbk_*kcn&+axy*5^_k!d#)@)2$nrfo=mm'
 DEBUG = True
 
 ALLOWED_HOSTS = ['*', ]
-
 
 # Application definition
 
@@ -53,10 +51,10 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware', # 注意顺序
+    'django.middleware.common.CommonMiddleware',  # 注意顺序
 ]
 
-#跨域增加忽略
+# 跨域增加忽略
 CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ORIGIN_WHITELIST = (
@@ -107,7 +105,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'kangni.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
@@ -123,11 +120,10 @@ DATABASES = {
         'NAME': 'kangni',
         'USER': 'root',
         'PASSWORD': 'mychebao',
-        'HOST':'188.188.22.164',
-        'PORT':'3306',
+        'HOST': '188.188.22.164',
+        'PORT': '3306',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -147,7 +143,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
@@ -156,7 +151,6 @@ TIME_ZONE = 'Asia/Shanghai'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = False
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
@@ -185,37 +179,37 @@ SIMPLEUI_ICON = {
     '综合管理': 'fas fa-desktop',
     '摄像头': 'fas fa-video',
     '员工': 'fas fa-user-tie',
-    '职务':'fas fa-user-secret',
-    '部门':'fas fa-university',
-    '区域':'fas fa-map-marked-alt',
-    '安装位置':'fas fa-map-marker-alt',
-    '事件':'fas fa-clock',
-    '事件类型':'far fa-clock',
-    '摄像头用途':'fas fa-cog'
+    '职务': 'fas fa-user-secret',
+    '部门': 'fas fa-university',
+    '区域': 'fas fa-map-marked-alt',
+    '安装位置': 'fas fa-map-marker-alt',
+    '事件': 'fas fa-clock',
+    '事件类型': 'far fa-clock',
+    '摄像头用途': 'fas fa-cog'
 }
 
 SIMPLEUI_CONFIG = {
-    'system_keep':True,
+    'system_keep': True,
     'menus': [{
         'name': '统计',
         'icon': 'fas fa-chart-line',
-        'models': [{
-            'name': '图表',
-            'url': 'log/',
-            'icon': 'fas fa-chart-pie'
-        },
+        'models': [
             {
-            'name': '图表二',
-            'url': 'log/layui',
-            'icon': 'fas fa-chart-bar'
+                'name': '报表',
+                'url': 'log/layui',
+                'icon': 'fas fa-chart-bar'
+            }, {
+                'name': '可视化报表',
+                'url': 'log/',
+                'icon': 'fas fa-chart-pie'
             }]
     }]
 }
 
 # session 设置
-SESSION_COOKIE_AGE = 60 * 30 # 30分钟
+SESSION_COOKIE_AGE = 60 * 30  # 30分钟
 SESSION_SAVE_EVERY_REQUEST = True
-SESSION_EXPIRE_AT_BROWSER_CLOSE = True # 关闭浏览器，则COOKIE失效
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # 关闭浏览器，则COOKIE失效
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

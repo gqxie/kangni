@@ -94,22 +94,23 @@ layui.use(['laydate', 'laypage', 'layer', 'table', 'carousel', 'upload', 'elemen
     elem: '#demo'
     ,height: 580
     ,url: 'getUser' //数据接口
-    ,title: '用户表'
+    ,title: '事件表'
     ,page: true //开启分页
     ,toolbar: 'default' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
     ,totalRow: true //开启合计行
     ,cols: [[ //表头
       {type: 'checkbox', fixed: 'left'}
-      ,{field: 'id', title: 'ID', width:80, sort: true, fixed: 'left', totalRowText: '合计：'}
-      ,{field: 'username', title: '用户名', width:80}
-      ,{field: 'experience', title: '积分', width: 90, sort: true, totalRow: true}
-      ,{field: 'sex', title: '性别', width:80, sort: true}
-      ,{field: 'score', title: '评分', width: 80, sort: true, totalRow: true}
-      ,{field: 'city', title: '城市', width:150}
-      ,{field: 'sign', title: '签名', width: 200}
-      ,{field: 'classify', title: '职业', width: 100}
-      ,{field: 'wealth', title: '财富', width: 135, sort: true, totalRow: true}
-      ,{fixed: 'right', width: 165, align:'center', toolbar: '#barDemo'}
+      ,{field: 'eventId', title: 'ID', width:80, sort: true,fixed: 'left'}
+      ,{field: 'eventType', title: '事件类型', width:120}
+      ,{field: 'employeName', title: '姓名', width: 80, sort: true}
+      ,{field: 'gender', title: '性别', width:80, sort: true}
+      ,{field: 'departmentName', title: '部门', width: 120}
+      ,{field: 'titleName', title: '职位', width:80}
+      ,{field: 'cameraName', title: '摄像头名称', width: 120}
+      ,{field: 'cameraUseType', title: '摄像头用途', width: 120}
+      ,{field: 'districtName', title: '区域', width: 120}
+      ,{field: 'positionName', title: '安装位置', width: 120}
+      ,{field: 'createTime', title: '时间', width: 180}
     ]]
   });
 

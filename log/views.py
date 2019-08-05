@@ -19,132 +19,60 @@ def layui(request):
 
 
 def getUser(request):
+    page = request.GET.get('page')
+    limit = request.GET.get('limit')
+    start = int(limit) * (int(page)-1)
+    cursor = connection.cursor()
+    sql = """SELECT
+            rev.id eventId,
+            reet.`name` eventType,
+            reem.`name` employeName,
+            CASE
+        WHEN reem.gender = 1 THEN
+            '男'
+        WHEN reem.gender = 2 THEN
+            '女'
+        ELSE
+            '未知'
+        END gender,
+         rede.`name` departmentName,
+         reti.`name` titleName,
+         reca.`name` cameraName,
+         recat.`name` cameraUseType,
+         redi.`name` districtName,
+         repo.`name` positionName,
+        DATE_FORMAT(rev.create_time, '%Y-%m-%d %H:%i:%S') createTime
+        FROM
+            resource_event rev
+        LEFT JOIN resource_employe reem ON rev.employe_id = reem.id
+        LEFT JOIN resource_department rede ON reem.department_id = rede.id
+        LEFT JOIN resource_title reti ON reem.title_id = reti.id
+        LEFT JOIN resource_eventtype reet ON rev.event_type_id = reet.id
+        LEFT JOIN resource_camera reca ON rev.camera_id = reca.id
+        LEFT JOIN resource_camerausetype recat ON reca.useType_id = recat.id
+        LEFT JOIN resource_position repo ON reca.address_id = repo.id
+        LEFT JOIN resource_district redi ON repo.district_id = redi.id
+        ORDER BY
+            rev.update_time DESC limit {},{};"""
+    sql = sql.format(start,limit)
+    cursor.execute(sql)
+    rows = cursor.fetchall()
+    data_list = []
+    columns = ['eventId','eventType','employeName','gender','departmentName','titleName','cameraName','cameraUseType','districtName','positionName','createTime']
+    for row in rows:
+        tmp_dict = {}
+        for col in columns:
+            tmp_dict[col] = row[columns.index(col)]
+        data_list.append(tmp_dict)
+
+    count_sql = 'select count(1) from resource_event;'
+    cursor.execute(count_sql)
+    count = cursor.fetchone()[0]
     rst = {
         'code': 0,
         'msg': '',
-        'count': 1000,
-        'data': [
-            {
-                'id': 10000,
-                'username': 'user-0',
-                'sex': '女',
-                'city': '城市-0',
-                'sign': '签名-0',
-                'experience': 255,
-                'logins': 24,
-                'wealth': 82830700,
-                'classify': '作家',
-                'score': 57
-            },
-            {
-                'id': 10001,
-                'username': 'user-1',
-                'sex': '男',
-                'city': '城市-1',
-                'sign': '签名-1',
-                'experience': 884,
-                'logins': 58,
-                'wealth': 64928690,
-                'classify': '词人',
-                'score': 27
-            },
-            {
-                'id': 10002,
-                'username': 'user-2',
-                'sex': '女',
-                'city': '城市-2',
-                'sign': '签名-2',
-                'experience': 650,
-                'logins': 77,
-                'wealth': 6298078,
-                'classify': '酱油',
-                'score': 31
-            },
-            {
-                'id': 10003,
-                'username': 'user-3',
-                'sex': '女',
-                'city': '城市-3',
-                'sign': '签名-3',
-                'experience': 362,
-                'logins': 157,
-                'wealth': 37117017,
-                'classify': '诗人',
-                'score': 68
-            },
-            {
-                'id': 10004,
-                'username': 'user-4',
-                'sex': '男',
-                'city': '城市-4',
-                'sign': '签名-4',
-                'experience': 807,
-                'logins': 51,
-                'wealth': 76263262,
-                'classify': '作家',
-                'score': 6
-            },
-            {
-                'id': 10005,
-                'username': 'user-5',
-                'sex': '女',
-                'city': '城市-5',
-                'sign': '签名-5',
-                'experience': 173,
-                'logins': 68,
-                'wealth': 60344147,
-                'classify': '作家',
-                'score': 87
-            },
-            {
-                'id': 10006,
-                'username': 'user-6',
-                'sex': '女',
-                'city': '城市-6',
-                'sign': '签名-6',
-                'experience': 982,
-                'logins': 37,
-                'wealth': 57768166,
-                'classify': '作家',
-                'score': 34
-            },
-            {
-                'id': 10007,
-                'username': 'user-7',
-                'sex': '男',
-                'city': '城市-7',
-                'sign': '签名-7',
-                'experience': 727,
-                'logins': 150,
-                'wealth': 82030578,
-                'classify': '作家',
-                'score': 28
-            },
-            {
-                'id': 10008,
-                'username': 'user-8',
-                'sex': '男',
-                'city': '城市-8',
-                'sign': '签名-8',
-                'experience': 951,
-                'logins': 133,
-                'wealth': 16503371,
-                'classify': '词人',
-                'score': 14
-            },
-            {
-                'id': 10009,
-                'username': 'user-9',
-                'sex': '女',
-                'city': '城市-9',
-                'sign': '签名-9',
-                'experience': 484,
-                'logins': 25,
-                'wealth': 86801934,
-                'classify': '词人',
-                'score': 75
-            }
-        ]
+        'count': count,
+        'data': data_list
     }
     return JsonResponse(rst)
 
