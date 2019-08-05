@@ -21,46 +21,46 @@
   <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 
-<div class="layui-tab layui-tab-brief" lay-filter="demo">
-  <ul class="layui-tab-title">
-    <li class="layui-this">演示说明</li>
-    <li>日期</li>
-    <li>分页</li>
-    <li>上传</li>
-    <li>滑块</li>
-  </ul>
-  <div class="layui-tab-content">
-    <div class="layui-tab-item layui-show">
-
-      <div class="layui-carousel" id="test1">
-        <div carousel-item>
-          <div><p class="layui-bg-green demo-carousel">在这里，你将以最直观的形式体验 layui！</p></div>
-          <div><p class="layui-bg-red demo-carousel">在编辑器中可以执行 layui 相关的一切代码</p></div>
-          <div><p class="layui-bg-blue demo-carousel">你也可以点击左侧导航针对性地试验我们提供的示例</p></div>
-          <div><p class="layui-bg-orange demo-carousel">如果最左侧的导航的高度超出了你的屏幕</p></div>
-          <div><p class="layui-bg-cyan demo-carousel">你可以将鼠标移入导航区域，然后滑动鼠标滚轮即可</p></div>
-        </div>
-      </div>
-    </div>
-    <div class="layui-tab-item">
-      <div id="laydateDemo"></div>
-    </div>
-    <div class="layui-tab-item">
-      <div id="pageDemo"></div>
-    </div>
-    <div class="layui-tab-item">
-      <div class="layui-upload-drag" id="uploadDemo">
-        <i class="layui-icon"></i>
-        <p>点击上传，或将文件拖拽到此处</p>
-      </div>
-    </div>
-    <div class="layui-tab-item">
-      <div id="sliderDemo" style="margin: 50px 20px;"></div>
-    </div>
-  </div>
-</div>
-
-<blockquote class="layui-elem-quote layui-quote-nm layui-hide" id="footer">layui {{ layui.v }} 提供强力驱动</blockquote>
+{#<div class="layui-tab layui-tab-brief" lay-filter="demo">#}
+{#  <ul class="layui-tab-title">#}
+{#    <li class="layui-this">演示说明</li>#}
+{#    <li>日期</li>#}
+{#    <li>分页</li>#}
+{#    <li>上传</li>#}
+{#    <li>滑块</li>#}
+{#  </ul>#}
+{#  <div class="layui-tab-content">#}
+{#    <div class="layui-tab-item layui-show">#}
+{##}
+{#      <div class="layui-carousel" id="test1">#}
+{#        <div carousel-item>#}
+{#          <div><p class="layui-bg-green demo-carousel">在这里，你将以最直观的形式体验 layui！</p></div>#}
+{#          <div><p class="layui-bg-red demo-carousel">在编辑器中可以执行 layui 相关的一切代码</p></div>#}
+{#          <div><p class="layui-bg-blue demo-carousel">你也可以点击左侧导航针对性地试验我们提供的示例</p></div>#}
+{#          <div><p class="layui-bg-orange demo-carousel">如果最左侧的导航的高度超出了你的屏幕</p></div>#}
+{#          <div><p class="layui-bg-cyan demo-carousel">你可以将鼠标移入导航区域，然后滑动鼠标滚轮即可</p></div>#}
+{#        </div>#}
+{#      </div>#}
+{#    </div>#}
+{#    <div class="layui-tab-item">#}
+{#      <div id="laydateDemo"></div>#}
+{#    </div>#}
+{#    <div class="layui-tab-item">#}
+{#      <div id="pageDemo"></div>#}
+{#    </div>#}
+{#    <div class="layui-tab-item">#}
+{#      <div class="layui-upload-drag" id="uploadDemo">#}
+{#        <i class="layui-icon"></i>#}
+{#        <p>点击上传，或将文件拖拽到此处</p>#}
+{#      </div>#}
+{#    </div>#}
+{#    <div class="layui-tab-item">#}
+{#      <div id="sliderDemo" style="margin: 50px 20px;"></div>#}
+{#    </div>#}
+{#  </div>#}
+{#</div>#}
+{##}
+{#<blockquote class="layui-elem-quote layui-quote-nm layui-hide" id="footer">layui {{ layui.v }} 提供强力驱动</blockquote>#}
 
 
 <script src="{% static 'layui/layui.all.js' %}"></script>
@@ -80,7 +80,7 @@ layui.use(['laydate', 'laypage', 'layer', 'table', 'carousel', 'upload', 'elemen
   ,slider = layui.slider //滑块
 
   //向世界问个好
-  layer.msg('Hello World');
+  {#layer.msg('Hello World');#}
 
   //监听Tab切换
   element.on('tab(demo)', function(data){
@@ -92,8 +92,8 @@ layui.use(['laydate', 'laypage', 'layer', 'table', 'carousel', 'upload', 'elemen
   //执行一个 table 实例
   table.render({
     elem: '#demo'
-    ,height: 420
-    ,url: '/demo/table/user/' //数据接口
+    ,height: 580
+    ,url: 'getUser' //数据接口
     ,title: '用户表'
     ,page: true //开启分页
     ,toolbar: 'default' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
@@ -214,9 +214,9 @@ layui.use(['laydate', 'laypage', 'layer', 'table', 'carousel', 'upload', 'elemen
   });
 
   //底部信息
-  var footerTpl = lay('#footer')[0].innerHTML;
-  lay('#footer').html(layui.laytpl(footerTpl).render({}))
-  .removeClass('layui-hide');
+  {#var footerTpl = lay('#footer')[0].innerHTML;#}
+  {#lay('#footer').html(layui.laytpl(footerTpl).render({}))#}
+  {#.removeClass('layui-hide');#}
 });
 </script>
 </body>
