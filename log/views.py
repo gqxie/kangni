@@ -11,6 +11,9 @@ def index(request):
     context = {"bar": bar(), "geo": geo(), "pie_base": pie_base(), "gauge_base": gauge_base()}
     return render(request, 'log/pyecharts.html', context)
 
+def layui(request):
+    context = {}
+    return render(request, 'log/layui.html', context)
 
 def bar():
     cursor = connection.cursor()
