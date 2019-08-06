@@ -46,3 +46,78 @@ Traceback (most recent call last):
   File "D:\Program Files\Python36\lib\site-packages\MySQLdb\connections.py", line 224, in query
     _mysql.connection.query(self, query)
 django.db.utils.OperationalError: (1054, "Unknown column 'rev.employe_id' in 'on clause'")
+[2019-08-06 23:44:38,544][Thread-7:9456][task_id:django.request][log.py:228][ERROR][Internal Server Error: /log/]
+Traceback (most recent call last):
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\db\backends\utils.py", line 82, in _execute
+    return self.cursor.execute(sql)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\db\backends\mysql\base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\MySQLdb\cursors.py", line 206, in execute
+    res = self._query(query)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\MySQLdb\cursors.py", line 312, in _query
+    db.query(q)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\MySQLdb\connections.py", line 224, in query
+    _mysql.connection.query(self, query)
+MySQLdb._exceptions.OperationalError: (1054, "Unknown column 'rev.employe_id' in 'on clause'")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\core\handlers\base.py", line 115, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\core\handlers\base.py", line 113, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\pyWorkSpace\kangni\log\views.py", line 12, in index
+    context = {"bar": bar(), "geo": geo(), "pie_base": pie_base(), "gauge_base": gauge_base()}
+  File "D:\pyWorkSpace\kangni\log\views.py", line 78, in bar
+    GROUP BY employe_id,event_type_id;""")
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\db\backends\utils.py", line 99, in execute
+    return super().execute(sql, params)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\db\backends\utils.py", line 76, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\db\backends\utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\db\utils.py", line 89, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\db\backends\utils.py", line 82, in _execute
+    return self.cursor.execute(sql)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\db\backends\mysql\base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\MySQLdb\cursors.py", line 206, in execute
+    res = self._query(query)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\MySQLdb\cursors.py", line 312, in _query
+    db.query(q)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\MySQLdb\connections.py", line 224, in query
+    _mysql.connection.query(self, query)
+django.db.utils.OperationalError: (1054, "Unknown column 'rev.employe_id' in 'on clause'")
+[2019-08-07 00:07:34,603][Thread-7:2744][task_id:resource.views][views.py:57][ERROR][摄像头不存在！]
+[2019-08-07 00:24:03,933][Thread-6:8852][task_id:django.request][log.py:228][ERROR][Internal Server Error: /log/]
+Traceback (most recent call last):
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\core\handlers\base.py", line 115, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\core\handlers\base.py", line 113, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\pyWorkSpace\kangni\log\views.py", line 13, in index
+    context = {"bar": bar(), "geo": geo(), "pie_base": pie_base(), "gauge_base": gauge_base()}
+  File "D:\pyWorkSpace\kangni\log\views.py", line 117, in pie_base
+    .add("", ['人脸识别','未系安全带','未戴安全帽','跨越围栏'], [4,9,5,1])
+TypeError: add() takes 3 positional arguments but 4 were given
+[2019-08-07 00:46:51,592][Thread-6:8888][task_id:django.request][log.py:228][ERROR][Internal Server Error: /log/]
+Traceback (most recent call last):
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\core\handlers\base.py", line 115, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\core\handlers\base.py", line 113, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\pyWorkSpace\kangni\log\views.py", line 13, in index
+    context = {"bar": bar(), "line": line(), "pie_base": pie_base(), "gauge_base": gauge_base()}
+  File "D:\pyWorkSpace\kangni\log\views.py", line 103, in bar
+    tmp_list[index] = row[2]
+IndexError: tuple index out of range

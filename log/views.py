@@ -1,15 +1,16 @@
 # Create your views here.
+# encoding: utf-8
 from django.conf import settings
 from django.db import connection
 from django.http import JsonResponse
 from django.shortcuts import render
 from example.commons import Faker
 from pyecharts import options as opts
-from pyecharts.charts import Bar, Geo, Gauge, Pie, WordCloud
+from pyecharts.charts import Bar, Gauge, Pie, WordCloud, Line, Timeline
 
 
 def index(request):
-    context = {"bar": bar(), "geo": geo(), "pie_base": pie_base(), "gauge_base": gauge_base()}
+    context = {"bar": bar(), "line": line(), "pie_base": pie_base(), "timeline_bar": timeline_bar()}
     return render(request, 'log/pyecharts.html', context)
 
 
@@ -72,10 +73,16 @@ def getUser(request):
 
 def bar():
     cursor = connection.cursor()
-    cursor.execute("""select rem.`name`,revt.`name` eventType,count(*) cnt from resource_event rev LEFT JOIN
-        resource_employe rem on rev.employe_id = rem.id 
-        LEFT JOIN resource_eventtype revt on rev.event_type_id = revt.id
-        GROUP BY employe_id,event_type_id;""")
+    cursor.execute("""SELECT
+            DATE_FORMAT( rev.create_time, '%Y-%m-%d' ) create_time,
+            revt.`name`,
+            count( * ) 
+        FROM
+            resource_event rev
+            LEFT JOIN resource_eventtype revt ON rev.event_type_id = revt.id 
+        GROUP BY
+            create_time,
+            event_type_id""")
     rows = cursor.fetchall()
     name_list = []
     event_type_list = []
@@ -97,44 +104,115 @@ def bar():
                 tmp_list[index] = row[2]
 
         bar.add_yaxis(event_type, tmp_list)
-    bar.set_global_opts(title_opts=opts.TitleOpts(title="不规范行为统计"), toolbox_opts=opts.ToolboxOpts(is_show=True,
+    bar.set_global_opts(title_opts=opts.TitleOpts(title="不规范行为统计"), toolbox_opts=opts.ToolboxOpts(is_show=False,
                                                                                                   feature=opts.ToolBoxFeatureOpts(
                                                                                                       restore=None,
                                                                                                       data_zoom=None)))
     return bar.render_embed()
 
 
-def geo() -> Geo:
-    c = (
-        Geo()
-            .add_schema(maptype="china")
-            .add("geo", [list(z) for z in zip(Faker.provinces, Faker.values())])
-            .set_series_opts(label_opts=opts.LabelOpts(is_show=False))
-            .set_global_opts(
-            visualmap_opts=opts.VisualMapOpts(is_piecewise=True),
-            title_opts=opts.TitleOpts(title="Geo-VisualMap（分段型）"),
-        )
-    )
-    return c.render_embed()
+def line():
+    cursor = connection.cursor()
+    cursor.execute("""SELECT
+            DATE_FORMAT( rev.create_time, '%Y-%m-%d' ) create_time,
+            revt.`name`,
+            count( * ) 
+        FROM
+            resource_event rev
+            LEFT JOIN resource_eventtype revt ON rev.event_type_id = revt.id 
+        GROUP BY
+            create_time,
+            event_type_id""")
+    rows = cursor.fetchall()
+    name_list = []
+    event_type_list = []
+    for row in rows:
+        name = row[0]
+        if name not in name_list:
+            name_list.append(name)
+        event_type = row[1]
+        if event_type not in event_type_list:
+            event_type_list.append(event_type)
+
+    line = Line()
+    line.add_xaxis(name_list)
+    for event_type in event_type_list:
+        tmp_list = [0 for i in range(len(name_list))]
+        for row in rows:
+            if event_type == row[1]:
+                index = name_list.index(row[0])
+                tmp_list[index] = row[2]
+
+        line.add_yaxis(event_type, tmp_list, is_smooth=True)
+    line.set_global_opts(title_opts=opts.TitleOpts(title="不规范行为变化统计"))
+    return line.render_embed()
 
 
-def pie_base() -> Pie:
+def pie_base():
+    cursor = connection.cursor()
+    cursor.execute("""SELECT
+            revt.`name` eventType,
+            count( * ) cnt 
+        FROM
+            resource_event rev
+            LEFT JOIN resource_eventtype revt ON rev.event_type_id = revt.id 
+        GROUP BY
+            rev.event_type_id;""")
+    rows = cursor.fetchall()
+    rst = []
+    for row in rows:
+        tmp = []
+        tmp.append(row[0])
+        tmp.append(row[1])
+        rst.append(tmp)
     c = (
         Pie()
-            .add("", [list(z) for z in zip(Faker.choose(), Faker.values())])
-            .set_global_opts(title_opts=opts.TitleOpts(title="Pie-基本示例"))
+            .add("", rst)
+            .set_global_opts(title_opts=opts.TitleOpts(title="事件类型占比"))
             .set_series_opts(label_opts=opts.LabelOpts(formatter="{b}: {c}"))
     )
     return c.render_embed()
 
 
-def gauge_base() -> Gauge:
-    c = (
-        Gauge()
-            .add("", [("完成率", 66.6)])
-            .set_global_opts(title_opts=opts.TitleOpts(title="Gauge-基本示例"))
-    )
-    return c.render_embed()
+def timeline_bar():
+    cursor = connection.cursor()
+    cursor.execute("""SELECT
+                DATE_FORMAT( rev.create_time, '%Y-%m-%d' ) create_time,
+                revt.`name`,
+                count( * ) 
+            FROM
+                resource_event rev
+                LEFT JOIN resource_eventtype revt ON rev.event_type_id = revt.id 
+            GROUP BY
+                create_time,
+                event_type_id""")
+    rows = cursor.fetchall()
+    name_list = []
+    event_type_list = []
+    for row in rows:
+        name = row[0]
+        if name not in name_list:
+            name_list.append(name)
+        event_type = row[1]
+        if event_type not in event_type_list:
+            event_type_list.append(event_type)
+
+    tl = Timeline()
+
+    for day in name_list:
+        bar = Bar()
+        bar.add_xaxis(event_type_list)
+
+        tmp_list = [0 for i in range(len(event_type_list))]
+        for row in rows:
+            if day == row[0]:
+                index = event_type_list.index(row[1])
+                tmp_list[index] = row[2]
+
+        bar.add_yaxis('不规范行为', tmp_list)
+        bar.set_global_opts(title_opts=opts.TitleOpts("{}不规范行为".format(day)))
+        tl.add(bar, "{}".format(day))
+    return tl.render_embed()
 
 
 def wc():
