@@ -18,24 +18,14 @@
 <body>
 
 <table class="layui-hide" id="demo"></table>
-
 <script src="{% static 'layui/layui.all.js' %}" charset="utf-8"></script>
-
-{#<script type="text/html" id="photoTpl">#}
-{#    <a href="{{d.photo}}" class="layui-table-link" target="_blank">{{d.photo}}</a>#}
-{#</script>#}
 <script>
     layui.config({
         version: '1560414887305' //为了更新 js 缓存，可忽略
     });
 
-    layui.use(['laydate', 'laypage', 'layer', 'table', 'carousel', 'upload', 'element', 'slider'], function () {
-        var laydate = layui.laydate //日期
-            , laypage = layui.laypage //分页
-            , layer = layui.layer //弹层
-            , table = layui.table //表格
-            , element = layui.element //元素操作
-            , slider = layui.slider //滑块
+    layui.use(['table'], function () {
+        var table = layui.table; //表格
 
         //执行一个 table 实例
         table.render({
@@ -50,8 +40,8 @@
             , even: true //开启隔行背景
             , size: 'sm' //小尺寸的表格
             , cols: [[ //表头
-                {type: 'numbers'}
-                , {type: 'checkbox', fixed: 'left'}
+                {#{type: 'numbers',fixed: 'left'}, #}
+                {type: 'checkbox', fixed: 'left'}
                 , {field: 'eventId', title: 'ID', width: 80, sort: true, fixed: 'left'}
                 , {field: 'eventType', title: '事件类型', width: 120}
                 , {field: 'employeName', title: '姓名', width: 80, sort: true}
@@ -71,7 +61,6 @@
                 , {field: 'createTime', title: '时间', width: 180}
             ]]
         });
-
     });
 </script>
 </body>
