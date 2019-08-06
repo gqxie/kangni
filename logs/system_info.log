@@ -1,0 +1,59 @@
+[INFO][2019-08-06 22:30:41,170][autoreload.py:584]Watching for file changes with StatReloader
+[INFO][2019-08-06 22:31:21,366][views.py:69]添加事件成功，图片路径：D:\github_workspace\kangni\media\events\2019-08-06\20190806223121891815.png
+[INFO][2019-08-06 22:31:59,510][views.py:69]添加事件成功，图片路径：D:\github_workspace\kangni\media\events\2019-08-06\20190806223159886018.png
+[INFO][2019-08-06 22:33:35,293][views.py:69]添加事件成功，图片路径：D:\github_workspace\kangni\media\events\2019-08-06\20190806223335208052.png
+[INFO][2019-08-06 22:34:53,852][views.py:69]添加事件成功，图片路径：D:\github_workspace\kangni\media\events\2019-08-06\20190806223453077498.png
+[INFO][2019-08-06 22:35:32,005][views.py:69]添加事件成功，图片路径：D:\github_workspace\kangni\media\events\2019-08-06\20190806223531899448.png
+[INFO][2019-08-06 22:44:19,325][autoreload.py:584]Watching for file changes with StatReloader
+[INFO][2019-08-06 22:45:05,549][autoreload.py:211]D:\github_workspace\kangni\resource\admin.py changed, reloading.
+[INFO][2019-08-06 22:45:08,883][autoreload.py:584]Watching for file changes with StatReloader
+[INFO][2019-08-06 22:45:33,176][autoreload.py:584]Watching for file changes with StatReloader
+[ERROR][2019-08-06 22:46:00,206][log.py:228]Internal Server Error: /log/
+Traceback (most recent call last):
+  File "D:\Program Files\Python36\lib\site-packages\django\db\backends\utils.py", line 82, in _execute
+    return self.cursor.execute(sql)
+  File "D:\Program Files\Python36\lib\site-packages\django\db\backends\mysql\base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "D:\Program Files\Python36\lib\site-packages\MySQLdb\cursors.py", line 206, in execute
+    res = self._query(query)
+  File "D:\Program Files\Python36\lib\site-packages\MySQLdb\cursors.py", line 312, in _query
+    db.query(q)
+  File "D:\Program Files\Python36\lib\site-packages\MySQLdb\connections.py", line 224, in query
+    _mysql.connection.query(self, query)
+MySQLdb._exceptions.OperationalError: (1054, "Unknown column 'rev.employe_id' in 'on clause'")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Program Files\Python36\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "D:\Program Files\Python36\lib\site-packages\django\core\handlers\base.py", line 115, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files\Python36\lib\site-packages\django\core\handlers\base.py", line 113, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\github_workspace\kangni\log\views.py", line 12, in index
+    context = {"bar": bar(), "geo": geo(), "pie_base": pie_base(), "gauge_base": gauge_base()}
+  File "D:\github_workspace\kangni\log\views.py", line 78, in bar
+    GROUP BY employe_id,event_type_id;""")
+  File "D:\Program Files\Python36\lib\site-packages\django\db\backends\utils.py", line 99, in execute
+    return super().execute(sql, params)
+  File "D:\Program Files\Python36\lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "D:\Program Files\Python36\lib\site-packages\django\db\backends\utils.py", line 76, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\Program Files\Python36\lib\site-packages\django\db\backends\utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\Program Files\Python36\lib\site-packages\django\db\utils.py", line 89, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\Program Files\Python36\lib\site-packages\django\db\backends\utils.py", line 82, in _execute
+    return self.cursor.execute(sql)
+  File "D:\Program Files\Python36\lib\site-packages\django\db\backends\mysql\base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "D:\Program Files\Python36\lib\site-packages\MySQLdb\cursors.py", line 206, in execute
+    res = self._query(query)
+  File "D:\Program Files\Python36\lib\site-packages\MySQLdb\cursors.py", line 312, in _query
+    db.query(q)
+  File "D:\Program Files\Python36\lib\site-packages\MySQLdb\connections.py", line 224, in query
+    _mysql.connection.query(self, query)
+django.db.utils.OperationalError: (1054, "Unknown column 'rev.employe_id' in 'on clause'")
+[INFO][2019-08-06 22:47:35,476][autoreload.py:584]Watching for file changes with StatReloader

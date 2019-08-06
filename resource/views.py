@@ -1,4 +1,5 @@
 import json
+import logging
 import os
 import random
 
@@ -10,6 +11,8 @@ from django.utils import timezone
 from django.views.decorators.http import require_POST
 
 from resource.models import Event, Employe, Camera, EventType
+
+logger = logging.getLogger(__name__)
 
 
 @require_POST
@@ -37,24 +40,23 @@ def addEvent(request):
         with open(pic_path, 'wb+') as f:
             f.write(pic)
     except Exception as e:
-        print('保存图片失败:' + str(e))
+        logger.error('保存图片失败:' + str(e))
 
     try:
-        employ_id = request.POST.get('employId')
         camera_id = request.POST.get('cameraId')
         event_type_id = request.POST.get('eventTypeId')
         photo = os.path.join('events', timezone.now().strftime('%Y-%m-%d'), fname)
         photo_height = request.POST.get('photoHeight')
         photo_weight = request.POST.get('photoWeight')
 
-        employ = Employe.objects.get(pk=employ_id)
         camera = Camera.objects.get(pk=camera_id)
         event_type = EventType.objects.get(pk=event_type_id)
 
-        event = Event(employe=employ, event_type=event_type, camera=camera, photo=photo, photo_height=photo_height,
+        event = Event(event_type=event_type, camera=camera, photo=photo, photo_height=photo_height,
                       photo_width=photo_weight)
         event.save()
     except Exception as e:
+        logger.error('添加事件失败！', e)
         return JsonResponse(rst)
 
     rst = {
@@ -62,4 +64,5 @@ def addEvent(request):
         'msg': 'success',
         'pic_path': pic_path
     }
+    logger.info('添加事件成功，图片路径：%s' % pic_path)
     return JsonResponse(rst)

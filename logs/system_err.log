@@ -1,0 +1,48 @@
+[2019-08-06 22:46:00,206][Thread-33:23088][task_id:django.request][log.py:228][ERROR][Internal Server Error: /log/]
+Traceback (most recent call last):
+  File "D:\Program Files\Python36\lib\site-packages\django\db\backends\utils.py", line 82, in _execute
+    return self.cursor.execute(sql)
+  File "D:\Program Files\Python36\lib\site-packages\django\db\backends\mysql\base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "D:\Program Files\Python36\lib\site-packages\MySQLdb\cursors.py", line 206, in execute
+    res = self._query(query)
+  File "D:\Program Files\Python36\lib\site-packages\MySQLdb\cursors.py", line 312, in _query
+    db.query(q)
+  File "D:\Program Files\Python36\lib\site-packages\MySQLdb\connections.py", line 224, in query
+    _mysql.connection.query(self, query)
+MySQLdb._exceptions.OperationalError: (1054, "Unknown column 'rev.employe_id' in 'on clause'")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\Program Files\Python36\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "D:\Program Files\Python36\lib\site-packages\django\core\handlers\base.py", line 115, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\Program Files\Python36\lib\site-packages\django\core\handlers\base.py", line 113, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\github_workspace\kangni\log\views.py", line 12, in index
+    context = {"bar": bar(), "geo": geo(), "pie_base": pie_base(), "gauge_base": gauge_base()}
+  File "D:\github_workspace\kangni\log\views.py", line 78, in bar
+    GROUP BY employe_id,event_type_id;""")
+  File "D:\Program Files\Python36\lib\site-packages\django\db\backends\utils.py", line 99, in execute
+    return super().execute(sql, params)
+  File "D:\Program Files\Python36\lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "D:\Program Files\Python36\lib\site-packages\django\db\backends\utils.py", line 76, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "D:\Program Files\Python36\lib\site-packages\django\db\backends\utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "D:\Program Files\Python36\lib\site-packages\django\db\utils.py", line 89, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "D:\Program Files\Python36\lib\site-packages\django\db\backends\utils.py", line 82, in _execute
+    return self.cursor.execute(sql)
+  File "D:\Program Files\Python36\lib\site-packages\django\db\backends\mysql\base.py", line 71, in execute
+    return self.cursor.execute(query, args)
+  File "D:\Program Files\Python36\lib\site-packages\MySQLdb\cursors.py", line 206, in execute
+    res = self._query(query)
+  File "D:\Program Files\Python36\lib\site-packages\MySQLdb\cursors.py", line 312, in _query
+    db.query(q)
+  File "D:\Program Files\Python36\lib\site-packages\MySQLdb\connections.py", line 224, in query
+    _mysql.connection.query(self, query)
+django.db.utils.OperationalError: (1054, "Unknown column 'rev.employe_id' in 'on clause'")

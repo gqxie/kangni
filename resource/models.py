@@ -151,8 +151,8 @@ class Employe(models.Model):
 
 
 class Event(models.Model):
-    employe = models.ForeignKey(Employe, on_delete=models.SET_NULL, blank=False, null=True, verbose_name='员工姓名',
-                                db_index=True)
+    # employe = models.ForeignKey(Employe, on_delete=models.SET_NULL, blank=False, null=True, verbose_name='员工姓名',
+    #                             db_index=True)
     event_type = models.ForeignKey(EventType, on_delete=models.SET_NULL, blank=False, null=True, verbose_name='事件类型',
                                    db_index=True)
     camera = models.ForeignKey(Camera, on_delete=models.SET_NULL, blank=False, null=True, verbose_name='摄像头',

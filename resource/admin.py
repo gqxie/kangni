@@ -186,9 +186,8 @@ class EventAdmin(ImportExportActionModelAdmin):
     upload_img.allow_tags = True
     readonly_fields = ['upload_img']
     resource_class = EventResource
-    list_display = ('id', 'employe', 'event_type', 'district', 'position', 'camera', 'upload_img', 'create_time')
-    search_fields = ('employe',)
+    list_display = ('id', 'event_type', 'district', 'position', 'camera', 'upload_img', 'create_time')
     list_per_page = 10
-    list_display_links = ('employe',)
-    list_filter = ('employe', 'event_type', 'camera')
+    list_display_links = ('id',)
+    list_filter = ('event_type', 'camera')
     list_editable = ('event_type', 'camera')

@@ -26,28 +26,17 @@ def getUser(request):
     sql = """SELECT
             rev.id eventId,
             reet.`name` eventType,
-            reem.`name` employeName,
-            CASE
-        WHEN reem.gender = 1 THEN
-            '男'
-        WHEN reem.gender = 2 THEN
-            '女'
-        ELSE
-            '未知'
-        END gender,
-         rede.`name` departmentName,
-         reti.`name` titleName,
-         reca.`name` cameraName,
-         recat.`name` cameraUseType,
-         redi.`name` districtName,
-         repo.`name` positionName,
-         rev.photo,
-        DATE_FORMAT(rev.create_time, '%Y-%m-%d %H:%i:%S') createTime
+            reca.`name` cameraName,
+            recat.`name` cameraUseType,
+            redi.`name` districtName,
+            repo.`name` positionName,
+            rev.photo,
+            DATE_FORMAT(
+                rev.create_time,
+                '%Y-%m-%d %H:%i:%S'
+            ) createTime
         FROM
             resource_event rev
-        LEFT JOIN resource_employe reem ON rev.employe_id = reem.id
-        LEFT JOIN resource_department rede ON reem.department_id = rede.id
-        LEFT JOIN resource_title reti ON reem.title_id = reti.id
         LEFT JOIN resource_eventtype reet ON rev.event_type_id = reet.id
         LEFT JOIN resource_camera reca ON rev.camera_id = reca.id
         LEFT JOIN resource_camerausetype recat ON reca.useType_id = recat.id
@@ -59,7 +48,7 @@ def getUser(request):
     cursor.execute(sql)
     rows = cursor.fetchall()
     data_list = []
-    columns = ['eventId', 'eventType', 'employeName', 'gender', 'departmentName', 'titleName', 'cameraName',
+    columns = ['eventId', 'eventType', 'cameraName',
                'cameraUseType', 'districtName', 'positionName', 'photo', 'createTime']
     for row in rows:
         tmp_dict = {}
