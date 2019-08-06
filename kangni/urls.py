@@ -24,5 +24,6 @@ admin.site.site_header = '综合管理平台'
 urlpatterns = [
     path('', admin.site.urls),
     url(r'^.*media/(?P<path>.*)$', serve, {'document_root':settings.MEDIA_ROOT}),
-    url(r'^log/', include('log.urls'))
+    url(r'^log/', include('log.urls')),
+    url(r'^resource/', include('resource.urls'))
 ]

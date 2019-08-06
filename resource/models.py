@@ -125,20 +125,20 @@ class Employe(models.Model):
         (1, '男'),
         (2, '女'),
     )
-    gender = models.IntegerField(choices=gender_choices, verbose_name='性别', default=0)
+    gender = models.IntegerField(choices=gender_choices, verbose_name='性别', blank=True, null=True)
     idCard = models.CharField(max_length=18, verbose_name='身份证号', help_text='18位的身份证号码', blank=True, null=True)
-    phone = models.CharField(max_length=11, verbose_name='手机号')
-    birthday = models.DateField(verbose_name='生日')
+    phone = models.CharField(max_length=11, verbose_name='手机号',blank=True, null=True)
+    birthday = models.DateField(verbose_name='生日',default='1900-01-01')
     department = models.ForeignKey(Department, on_delete=models.SET_NULL, blank=False, null=True, verbose_name='部门',
                                    db_index=True)
 
     title = models.ForeignKey(Title, on_delete=models.SET_NULL, blank=False, null=True, verbose_name='职务',
                               db_index=True)
-    photo_height = models.PositiveIntegerField(blank=True, verbose_name='高度', default=0)
-    photo_width = models.PositiveIntegerField(blank=True, verbose_name='宽度', default=0)
+    photo_height = models.PositiveIntegerField(blank=True, verbose_name='高度', default=0, null=True)
+    photo_width = models.PositiveIntegerField(blank=True, verbose_name='宽度', default=0, null=True)
     photo = models.ImageField(upload_to="photos/%Y-%m-%d/", height_field='photo_height', verbose_name='照片',
                               width_field='photo_width',
-                              default='default.png')
+                              default='default.png',blank=True, null=True)
     create_time = models.DateTimeField(verbose_name='创建时间', auto_now_add=True)
     update_time = models.DateTimeField(verbose_name='更新时间', auto_now=True)
 
