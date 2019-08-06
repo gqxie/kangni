@@ -17,11 +17,12 @@ from django.conf import settings
 from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import RedirectView
 from django.views.static import serve
 admin.site.site_title = '管理后台'
 admin.site.site_header = '综合管理平台'
 urlpatterns = [
     path('', admin.site.urls),
-    url(r'^media/(?P<path>.*)$', serve, {'document_root':settings.MEDIA_ROOT}),
+    url(r'^.*media/(?P<path>.*)$', serve, {'document_root':settings.MEDIA_ROOT}),
     url(r'^log/', include('log.urls'))
 ]

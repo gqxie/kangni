@@ -1,5 +1,5 @@
 # Create your views here.
-
+from django.conf import settings
 from django.db import connection
 from django.http import JsonResponse
 from django.shortcuts import render
@@ -21,7 +21,7 @@ def layui(request):
 def getUser(request):
     page = request.GET.get('page')
     limit = request.GET.get('limit')
-    start = int(limit) * (int(page)-1)
+    start = int(limit) * (int(page) - 1)
     cursor = connection.cursor()
     sql = """SELECT
             rev.id eventId,
@@ -41,6 +41,7 @@ def getUser(request):
          recat.`name` cameraUseType,
          redi.`name` districtName,
          repo.`name` positionName,
+         rev.photo,
         DATE_FORMAT(rev.create_time, '%Y-%m-%d %H:%i:%S') createTime
         FROM
             resource_event rev
@@ -54,15 +55,18 @@ def getUser(request):
         LEFT JOIN resource_district redi ON repo.district_id = redi.id
         ORDER BY
             rev.update_time DESC limit {},{};"""
-    sql = sql.format(start,limit)
+    sql = sql.format(start, limit)
     cursor.execute(sql)
     rows = cursor.fetchall()
     data_list = []
-    columns = ['eventId','eventType','employeName','gender','departmentName','titleName','cameraName','cameraUseType','districtName','positionName','createTime']
+    columns = ['eventId', 'eventType', 'employeName', 'gender', 'departmentName', 'titleName', 'cameraName',
+               'cameraUseType', 'districtName', 'positionName', 'photo', 'createTime']
     for row in rows:
         tmp_dict = {}
         for col in columns:
             tmp_dict[col] = row[columns.index(col)]
+            if 'photo' == col:
+                tmp_dict[col] = '%s%s%s' % (settings.DOMAIN_NAME, settings.MEDIA_URL, row[columns.index(col)])
         data_list.append(tmp_dict)
 
     count_sql = 'select count(1) from resource_event;'

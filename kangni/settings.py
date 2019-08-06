@@ -217,3 +217,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 SIMPLEUI_LOGO = MEDIA_URL + 'logo_sfex.png'
 
 SIMPLEUI_HOME_INFO = False
+
+DOMAIN_NAME = 'www.xieguoqiang.com'

@@ -3,6 +3,8 @@
 {% load static %}
 <head>
     <meta charset="utf-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <title>违规事件统计</title>
@@ -11,26 +13,17 @@
         body {
             margin: 10px;
         }
-
-        .demo-carousel {
-            height: 200px;
-            line-height: 200px;
-            text-align: center;
-        }
     </style>
 </head>
 <body>
 
-{#<div class="demoTable">#}
-{#  <div class="layui-inline">#}
-{#    <i class="layui-icon layui-icon-search"></i>#}
-{#    <input class="layui-input" name="id" id="demoReload" autocomplete="off" placeholder="搜索姓名">#}
-{#  </div>#}
-{#  <button class="layui-btn layui-btn-normal layui-btn-radius" data-type="reload"><i class="layui-icon layui-icon-search"></i>搜索</button>#}
-{#</div>#}
 <table class="layui-hide" id="demo"></table>
 
-<script src="{% static 'layui/layui.all.js' %}"></script>
+<script src="{% static 'layui/layui.all.js' %}" charset="utf-8"></script>
+
+{#<script type="text/html" id="photoTpl">#}
+{#    <a href="{{d.photo}}" class="layui-table-link" target="_blank">{{d.photo}}</a>#}
+{#</script>#}
 <script>
     layui.config({
         version: '1560414887305' //为了更新 js 缓存，可忽略
@@ -43,13 +36,6 @@
             , table = layui.table //表格
             , element = layui.element //元素操作
             , slider = layui.slider //滑块
-
-        //监听Tab切换
-        element.on('tab(demo)', function (data) {
-            layer.tips('切换了 ' + data.index + '：' + this.innerHTML, this, {
-                tips: 1
-            });
-        });
 
         //执行一个 table 实例
         table.render({
@@ -64,7 +50,8 @@
             , even: true //开启隔行背景
             , size: 'sm' //小尺寸的表格
             , cols: [[ //表头
-                {type: 'checkbox', fixed: 'left'}
+                {type: 'numbers'}
+                , {type: 'checkbox', fixed: 'left'}
                 , {field: 'eventId', title: 'ID', width: 80, sort: true, fixed: 'left'}
                 , {field: 'eventType', title: '事件类型', width: 120}
                 , {field: 'employeName', title: '姓名', width: 80, sort: true}
@@ -75,76 +62,14 @@
                 , {field: 'cameraUseType', title: '摄像头用途', width: 120}
                 , {field: 'districtName', title: '区域', width: 120}
                 , {field: 'positionName', title: '安装位置', width: 120}
+                , {
+                    field: 'photo', title: '照片', width: 450, templet: function (d) {
+                        var uri = 'media' + d.photo.split('media')[1];
+                        return '<div><a href="' + uri + '" class="layui-table-link" target="_blank">' + d.photo + '</a></div>'
+                    }
+                }
                 , {field: 'createTime', title: '时间', width: 180}
             ]]
-            ,id: 'testReload'
-        });
-
-        var $ = layui.$, active = {
-            reload: function(){
-              var demoReload = $('#demoReload');
-
-              //执行重载
-              table.reload('testReload', {
-                page: {
-                  curr: 1 //重新从第 1 页开始
-                }
-                ,where: {
-                  key: {
-                    name: demoReload.val()
-                  }
-                }
-              }, 'data');
-            }
-          };
-
-          $('.demoTable .layui-btn').on('click', function(){
-            var type = $(this).data('type');
-            active[type] ? active[type].call(this) : '';
-          });
-
-        //监听头工具栏事件
-        table.on('toolbar(test)', function (obj) {
-            var checkStatus = table.checkStatus(obj.config.id)
-                , data = checkStatus.data; //获取选中的数据
-            switch (obj.event) {
-                case 'add':
-                    layer.msg('添加');
-                    break;
-                case 'update':
-                    if (data.length === 0) {
-                        layer.msg('请选择一行');
-                    } else if (data.length > 1) {
-                        layer.msg('只能同时编辑一个');
-                    } else {
-                        layer.alert('编辑 [id]：' + checkStatus.data[0].id);
-                    }
-                    break;
-                case 'delete':
-                    if (data.length === 0) {
-                        layer.msg('请选择一行');
-                    } else {
-                        layer.msg('删除');
-                    }
-                    break;
-            }
-        });
-
-        //监听行工具事件
-        table.on('tool(test)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
-            var data = obj.data //获得当前行数据
-                , layEvent = obj.event; //获得 lay-event 对应的值
-            if (layEvent === 'detail') {
-                layer.msg('查看操作');
-            } else if (layEvent === 'del') {
-                layer.confirm('真的删除行么', function (index) {
-                    obj.del(); //删除对应行（tr）的DOM结构
-                    layer.close(index);
-                    //向服务端发送删除指令
-                });
-            } else if (layEvent === 'edit') {
-                layer.msg('编辑操作');
-            }
         });
 
     });
