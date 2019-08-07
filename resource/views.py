@@ -1,16 +1,15 @@
-import json
+import logging
 import logging
 import os
 import random
 
 from django.conf import settings
 from django.http import JsonResponse
-
 # Create your views here.
 from django.utils import timezone
 from django.views.decorators.http import require_POST
 
-from resource.models import Event, Employe, Camera, EventType
+from resource.models import Event, Camera, EventType
 
 logger = logging.getLogger(__name__)
 

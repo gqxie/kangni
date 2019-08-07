@@ -147,3 +147,4 @@ Traceback (most recent call last):
   File "D:\pyWorkSpace\kangni\log\views.py", line 211, in timeline_bar
     num = row[3]
 IndexError: tuple index out of range
+[2019-08-07 12:53:31,380][Thread-13:18708][task_id:resource.views][views.py:57][ERROR][摄像头不存在！]

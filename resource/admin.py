@@ -120,7 +120,7 @@ class EmployeAdmin(ImportExportActionModelAdmin):
     raw_id_fields = ('department', 'title')
     list_filter = ('department', AgeListFilter)
     list_display_links = ('name',)
-    list_editable = ('phone', 'birthday', 'gender')
+    list_editable = ('gender',)
 
 
 @admin.register(District)
@@ -182,11 +182,16 @@ class EventAdmin(ImportExportActionModelAdmin):
             img = ''
         return img
 
+    def full_create_time(self, obj):
+        return obj.create_time.strftime("%Y-%m-%d %H:%M:%S")
+
+    full_create_time.short_description = u'创建时间'
+
     upload_img.short_description = u'照片'
     upload_img.allow_tags = True
     readonly_fields = ['upload_img']
     resource_class = EventResource
-    list_display = ('id', 'event_type', 'district', 'position', 'camera', 'upload_img', 'create_time')
+    list_display = ('id', 'event_type', 'district', 'position', 'camera', 'upload_img', 'full_create_time')
     list_per_page = 10
     list_display_links = ('id',)
     list_filter = ('event_type', 'camera')
