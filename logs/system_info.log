@@ -186,3 +186,58 @@ IndexError: tuple index out of range
 [INFO][2019-08-07 01:18:42,229][autoreload.py:584]Watching for file changes with StatReloader
 [INFO][2019-08-07 01:22:01,167][autoreload.py:584]Watching for file changes with StatReloader
 [INFO][2019-08-07 01:23:44,190][autoreload.py:584]Watching for file changes with StatReloader
+[INFO][2019-08-07 10:26:54,652][autoreload.py:584]Watching for file changes with StatReloader
+[WARNING][2019-08-07 10:27:18,415][log.py:228]Not Found: /favicon.ico
+[INFO][2019-08-07 10:32:37,098][autoreload.py:211]D:\pyWorkSpace\kangni\log\views.py changed, reloading.
+[INFO][2019-08-07 10:32:42,239][autoreload.py:584]Watching for file changes with StatReloader
+[INFO][2019-08-07 10:34:57,940][autoreload.py:584]Watching for file changes with StatReloader
+[INFO][2019-08-07 10:40:19,134][autoreload.py:584]Watching for file changes with StatReloader
+[INFO][2019-08-07 10:43:34,887][autoreload.py:584]Watching for file changes with StatReloader
+[INFO][2019-08-07 10:47:46,067][autoreload.py:584]Watching for file changes with StatReloader
+[INFO][2019-08-07 10:51:06,761][autoreload.py:584]Watching for file changes with StatReloader
+[INFO][2019-08-07 10:52:05,871][autoreload.py:584]Watching for file changes with StatReloader
+[INFO][2019-08-07 10:52:55,542][autoreload.py:211]D:\pyWorkSpace\kangni\log\views.py changed, reloading.
+[INFO][2019-08-07 10:53:02,244][autoreload.py:584]Watching for file changes with StatReloader
+[INFO][2019-08-07 11:01:49,398][autoreload.py:584]Watching for file changes with StatReloader
+[INFO][2019-08-07 11:03:12,866][autoreload.py:584]Watching for file changes with StatReloader
+[INFO][2019-08-07 11:03:54,233][autoreload.py:584]Watching for file changes with StatReloader
+[INFO][2019-08-07 11:06:06,658][autoreload.py:584]Watching for file changes with StatReloader
+[INFO][2019-08-07 11:07:42,460][autoreload.py:584]Watching for file changes with StatReloader
+[INFO][2019-08-07 11:10:51,699][autoreload.py:211]D:\pyWorkSpace\kangni\log\views.py changed, reloading.
+[INFO][2019-08-07 11:10:58,146][autoreload.py:584]Watching for file changes with StatReloader
+[INFO][2019-08-07 11:12:20,768][autoreload.py:584]Watching for file changes with StatReloader
+[INFO][2019-08-07 11:14:48,268][autoreload.py:584]Watching for file changes with StatReloader
+[INFO][2019-08-07 11:17:23,127][autoreload.py:584]Watching for file changes with StatReloader
+[INFO][2019-08-07 11:18:16,966][autoreload.py:584]Watching for file changes with StatReloader
+[INFO][2019-08-07 11:27:17,759][autoreload.py:584]Watching for file changes with StatReloader
+[ERROR][2019-08-07 11:27:24,837][log.py:228]Internal Server Error: /log/
+Traceback (most recent call last):
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\core\handlers\base.py", line 115, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\core\handlers\base.py", line 113, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\pyWorkSpace\kangni\log\views.py", line 13, in index
+    context = {"bar": bar(), "line": line(), "pie_base": pie_base(), "timeline_bar": timeline_bar()}
+  File "D:\pyWorkSpace\kangni\log\views.py", line 211, in timeline_bar
+    num = row[3]
+IndexError: tuple index out of range
+[ERROR][2019-08-07 11:28:01,977][log.py:228]Internal Server Error: /log/
+Traceback (most recent call last):
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\core\handlers\base.py", line 115, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\core\handlers\base.py", line 113, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\pyWorkSpace\kangni\log\views.py", line 13, in index
+    context = {"bar": bar(), "line": line(), "pie_base": pie_base(), "timeline_bar": timeline_bar()}
+  File "D:\pyWorkSpace\kangni\log\views.py", line 211, in timeline_bar
+    num = row[3]
+IndexError: tuple index out of range
+[INFO][2019-08-07 11:28:28,681][autoreload.py:584]Watching for file changes with StatReloader
+[INFO][2019-08-07 11:29:23,078][autoreload.py:211]D:\pyWorkSpace\kangni\log\views.py changed, reloading.
+[INFO][2019-08-07 11:29:29,343][autoreload.py:584]Watching for file changes with StatReloader
+[INFO][2019-08-07 11:30:00,257][autoreload.py:584]Watching for file changes with StatReloader
+[INFO][2019-08-07 11:35:37,840][autoreload.py:584]Watching for file changes with StatReloader

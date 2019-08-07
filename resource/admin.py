@@ -120,7 +120,7 @@ class EmployeAdmin(ImportExportActionModelAdmin):
     raw_id_fields = ('department', 'title')
     list_filter = ('department', AgeListFilter)
     list_display_links = ('name',)
-    list_editable = ('department', 'title', 'phone', 'birthday', 'gender')
+    list_editable = ('phone', 'birthday', 'gender')
 
 
 @admin.register(District)

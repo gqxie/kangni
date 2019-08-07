@@ -121,3 +121,29 @@ Traceback (most recent call last):
   File "D:\pyWorkSpace\kangni\log\views.py", line 103, in bar
     tmp_list[index] = row[2]
 IndexError: tuple index out of range
+[2019-08-07 11:27:24,837][Thread-6:3180][task_id:django.request][log.py:228][ERROR][Internal Server Error: /log/]
+Traceback (most recent call last):
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\core\handlers\base.py", line 115, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\core\handlers\base.py", line 113, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\pyWorkSpace\kangni\log\views.py", line 13, in index
+    context = {"bar": bar(), "line": line(), "pie_base": pie_base(), "timeline_bar": timeline_bar()}
+  File "D:\pyWorkSpace\kangni\log\views.py", line 211, in timeline_bar
+    num = row[3]
+IndexError: tuple index out of range
+[2019-08-07 11:28:01,977][Thread-6:3180][task_id:django.request][log.py:228][ERROR][Internal Server Error: /log/]
+Traceback (most recent call last):
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\core\handlers\base.py", line 115, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\core\handlers\base.py", line 113, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\pyWorkSpace\kangni\log\views.py", line 13, in index
+    context = {"bar": bar(), "line": line(), "pie_base": pie_base(), "timeline_bar": timeline_bar()}
+  File "D:\pyWorkSpace\kangni\log\views.py", line 211, in timeline_bar
+    num = row[3]
+IndexError: tuple index out of range

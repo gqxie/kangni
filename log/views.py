@@ -144,7 +144,7 @@ def line():
                 tmp_list[index] = row[2]
 
         line.add_yaxis(event_type, tmp_list, is_smooth=True)
-    line.set_global_opts(title_opts=opts.TitleOpts(title="不规范行为变化统计"))
+    line.set_global_opts(title_opts=opts.TitleOpts(title="数量变化统计"))
     return line.render_embed()
 
 
@@ -179,10 +179,10 @@ def timeline_bar():
     cursor.execute("""SELECT
                 DATE_FORMAT( rev.create_time, '%Y-%m-%d' ) create_time,
                 revt.`name`,
-                count( * ) 
+                count( * )
             FROM
                 resource_event rev
-                LEFT JOIN resource_eventtype revt ON rev.event_type_id = revt.id 
+                LEFT JOIN resource_eventtype revt ON rev.event_type_id = revt.id
             GROUP BY
                 create_time,
                 event_type_id""")
@@ -201,18 +201,33 @@ def timeline_bar():
 
     for day in name_list:
         bar = Bar()
-        bar.add_xaxis(event_type_list)
+        bar.add_xaxis(['不规范行为'])
 
-        tmp_list = [0 for i in range(len(event_type_list))]
-        for row in rows:
-            if day == row[0]:
-                index = event_type_list.index(row[1])
-                tmp_list[index] = row[2]
+        for i in range(len(event_type_list)):
+            event_type_name = event_type_list[i]
+            num = 0
+            for row in rows:
+                if day == row[0] and event_type_name == row[1]:
+                    num = row[2]
+                    break
 
-        bar.add_yaxis('不规范行为', tmp_list)
-        bar.set_global_opts(title_opts=opts.TitleOpts("{}不规范行为".format(day)))
+            bar.add_yaxis(event_type_name, [num])
+
+        bar.set_global_opts(title_opts=opts.TitleOpts("{}".format(day)))
         tl.add(bar, "{}".format(day))
     return tl.render_embed()
+
+
+# def timeline_bar():
+#     print(1)
+#     c = (
+#         Bar()
+#         .add_xaxis(['不规范行为统计'])
+#         .add_yaxis("未戴安全帽", [1])
+#         .add_yaxis("人脸识别", [2])
+#         .set_global_opts(title_opts=opts.TitleOpts(title="Bar-基本示例", subtitle="我是副标题"))
+#     )
+#     return c.render_embed()
 
 
 def wc():
