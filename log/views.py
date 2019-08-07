@@ -4,9 +4,8 @@ from django.conf import settings
 from django.db import connection
 from django.http import JsonResponse
 from django.shortcuts import render
-from example.commons import Faker
 from pyecharts import options as opts
-from pyecharts.charts import Bar, Gauge, Pie, WordCloud, Line, Timeline
+from pyecharts.charts import Bar, Pie, WordCloud, Line, Timeline
 
 
 def index(request):
@@ -216,18 +215,6 @@ def timeline_bar():
         bar.set_global_opts(title_opts=opts.TitleOpts("{}".format(day)))
         tl.add(bar, "{}".format(day))
     return tl.render_embed()
-
-
-# def timeline_bar():
-#     print(1)
-#     c = (
-#         Bar()
-#         .add_xaxis(['不规范行为统计'])
-#         .add_yaxis("未戴安全帽", [1])
-#         .add_yaxis("人脸识别", [2])
-#         .set_global_opts(title_opts=opts.TitleOpts(title="Bar-基本示例", subtitle="我是副标题"))
-#     )
-#     return c.render_embed()
 
 
 def wc():
