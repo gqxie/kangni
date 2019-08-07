@@ -241,3 +241,6 @@ IndexError: tuple index out of range
 [INFO][2019-08-07 11:29:29,343][autoreload.py:584]Watching for file changes with StatReloader
 [INFO][2019-08-07 11:30:00,257][autoreload.py:584]Watching for file changes with StatReloader
 [INFO][2019-08-07 11:35:37,840][autoreload.py:584]Watching for file changes with StatReloader
+[INFO][2019-08-07 11:37:42,938][autoreload.py:584]Watching for file changes with StatReloader
+[INFO][2019-08-07 21:28:05,333][autoreload.py:584]Watching for file changes with StatReloader
+[WARNING][2019-08-07 21:28:21,118][log.py:228]Not Found: /favicon.ico
