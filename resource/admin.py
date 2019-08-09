@@ -34,10 +34,10 @@ class ProxyResource(resources.ModelResource):
 
 @admin.register(Camera)
 class CameraAdmin(ImportExportActionModelAdmin):
-    # def district(self, obj):
-    #     return obj.address.district.name
-    #
-    # district.short_description = u'区域'
+    def district(self, obj):
+        return obj.position.district.name
+
+    district.short_description = u'作业场所'
 
     def full_online_time(self, obj):
         return obj.online_time.strftime("%Y-%m-%d %H:%M:%S")
@@ -166,12 +166,12 @@ class EventResource(resources.ModelResource):
 class EventAdmin(ImportExportActionModelAdmin):
 
     def district(self, obj):
-        return obj.position.district.name
+        return obj.camera.position.district.name
 
     district.short_description = u'作业场所'
 
     def position(self, obj):
-        return obj.position.name
+        return obj.camera.position.name
 
     position.short_description = u'作业单位'
 

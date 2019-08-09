@@ -59,6 +59,8 @@ class Camera(models.Model):
     password = models.CharField(max_length=128, verbose_name='密码', help_text='摄像头连接密码', null=False, default='',
                                 blank=False,
                                 db_index=True)
+    position = models.ForeignKey(Position, on_delete=models.SET_NULL, blank=False, null=True, verbose_name='作业单位',
+                                 db_index=True)
     online_time = models.DateTimeField(verbose_name='在线时间', default=timezone.now)
     create_time = models.DateTimeField(verbose_name='创建时间', auto_now_add=True)
     update_time = models.DateTimeField(verbose_name='更新时间', auto_now=True)
@@ -153,8 +155,6 @@ class Event(models.Model):
                                    db_index=True)
     camera = models.ForeignKey(Camera, on_delete=models.SET_NULL, blank=False, null=True, verbose_name='摄像头',
                                db_index=True)
-    position = models.ForeignKey(Position, on_delete=models.SET_NULL, blank=False, null=True, verbose_name='作业单位',
-                                 db_index=True)
     photo_height = models.PositiveIntegerField(blank=True, verbose_name='高度', default=0)
     photo_width = models.PositiveIntegerField(blank=True, verbose_name='宽度', default=0)
     photo = models.ImageField(upload_to="events/%Y-%m-%d/", height_field='photo_height', verbose_name='照片',

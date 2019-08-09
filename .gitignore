@@ -2,3 +2,5 @@
 venv/
 *.pyc
 media/events/
+resource/migrations/
+logs/

@@ -40,7 +40,7 @@ def getUser(request):
         LEFT JOIN resource_eventtype reet ON rev.event_type_id = reet.id
         LEFT JOIN resource_camera reca ON rev.camera_id = reca.id
         LEFT JOIN resource_camerausetype recat ON reca.useType_id = recat.id
-        LEFT JOIN resource_position repo ON rev.position_id = repo.id
+        LEFT JOIN resource_position repo ON reca.position_id = repo.id
         LEFT JOIN resource_district redi ON repo.district_id = redi.id
         ORDER BY
             rev.update_time DESC limit {},{};"""

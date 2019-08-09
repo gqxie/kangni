@@ -272,7 +272,7 @@ SIMPLEUI_ICON = {
     '职务': 'fas fa-user-secret',
     '部门': 'fas fa-university',
     '作业场所': 'fas fa-map-marked-alt',
-    '作业单位': 'fas fa-map-marker-alt',
+    '作业单位': 'fas fa-users',
     '违章记录': 'fas fa-clock',
     '违章行为': 'far fa-clock',
     '摄像头用途': 'fas fa-cog'
