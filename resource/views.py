@@ -44,7 +44,7 @@ def addEvent(request):
 
         camera_id = request.POST.get('cameraId')
         event_type_id = request.POST.get('eventTypeId')
-        position_id = request.POST.get('positionId')
+        # position_id = request.POST.get('positionId')
         photo = os.path.join('events', timezone.now().strftime('%Y-%m-%d'), fname)
         photo_height = request.POST.get('photoHeight')
         photo_weight = request.POST.get('photoWeight')
@@ -65,15 +65,7 @@ def addEvent(request):
             logger.error(msg)
             return JsonResponse(rst)
         
-        try:
-            postion = Position.objects.get(pk=position_id)
-        except Position.DoesNotExist:
-            msg = '作业单位不存在！'
-            rst['msg'] = msg
-            logger.error(msg)
-            return JsonResponse(rst)
-
-        event = Event(event_type=event_type, camera=camera, photo=photo,position=postion, photo_height=photo_height,
+        event = Event(event_type=event_type, camera=camera, photo=photo, photo_height=photo_height,
                       photo_width=photo_weight)
         event.save()
     except Exception as e:
