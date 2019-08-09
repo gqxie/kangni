@@ -34,10 +34,10 @@ class ProxyResource(resources.ModelResource):
 
 @admin.register(Camera)
 class CameraAdmin(ImportExportActionModelAdmin):
-    def district(self, obj):
-        return obj.address.district.name
-
-    district.short_description = u'区域'
+    # def district(self, obj):
+    #     return obj.address.district.name
+    #
+    # district.short_description = u'区域'
 
     def full_online_time(self, obj):
         return obj.online_time.strftime("%Y-%m-%d %H:%M:%S")
@@ -61,11 +61,11 @@ class CameraAdmin(ImportExportActionModelAdmin):
     state.short_description = u'状态'
     resource_class = ProxyResource
     list_display = (
-        'id', 'name', 'useType', 'ip', 'username', 'password', 'district', 'address', 'state', 'full_online_time',
+        'id', 'name', 'useType', 'ip', 'username', 'password', 'state', 'full_online_time',
         'full_create_time')
-    search_fields = ('name', 'useType', 'address')
+    search_fields = ('name', 'useType')
     list_per_page = 10
-    list_filter = ('useType', 'address', 'create_time')
+    list_filter = ('useType', 'create_time')
     list_display_links = ('name',)
     list_editable = ('useType',)
 
@@ -166,14 +166,14 @@ class EventResource(resources.ModelResource):
 class EventAdmin(ImportExportActionModelAdmin):
 
     def district(self, obj):
-        return obj.camera.address.district.name
+        return obj.position.district.name
 
-    district.short_description = u'区域'
+    district.short_description = u'作业场所'
 
     def position(self, obj):
-        return obj.camera.address.name
+        return obj.position.name
 
-    position.short_description = u'位置'
+    position.short_description = u'作业单位'
 
     def upload_img(self, obj):
         try:
@@ -185,7 +185,7 @@ class EventAdmin(ImportExportActionModelAdmin):
     def full_create_time(self, obj):
         return obj.create_time.strftime("%Y-%m-%d %H:%M:%S")
 
-    full_create_time.short_description = u'创建时间'
+    full_create_time.short_description = u'违章时间'
 
     upload_img.short_description = u'照片'
     upload_img.allow_tags = True

@@ -6,28 +6,28 @@ from django.utils import timezone
 
 
 class District(models.Model):
-    name = models.CharField(max_length=128, verbose_name='区域名称', help_text='区域名称应该唯一', unique=True, db_index=True)
+    name = models.CharField(max_length=128, verbose_name='作业场所', help_text='作业场所应该唯一', unique=True, db_index=True)
     create_time = models.DateTimeField(verbose_name='创建时间', auto_now_add=True)
     update_time = models.DateTimeField(verbose_name='更新时间', auto_now=True)
 
     class Meta:
-        verbose_name = "区域"
-        verbose_name_plural = "区域"
+        verbose_name = "作业场所"
+        verbose_name_plural = "作业场所"
 
     def __str__(self):
         return self.name
 
 
 class Position(models.Model):
-    name = models.CharField(max_length=128, verbose_name='安装位置', help_text='一个区域包含多个位置', unique=False, db_index=True)
-    district = models.ForeignKey(District, on_delete=models.SET_NULL, blank=False, null=True, verbose_name='区域',
+    name = models.CharField(max_length=128, verbose_name='作业单位', help_text='一个作业场所包含多个作业单位', unique=False, db_index=True)
+    district = models.ForeignKey(District, on_delete=models.SET_NULL, blank=False, null=True, verbose_name='作业场所',
                                  db_index=True)
     create_time = models.DateTimeField(verbose_name='创建时间', auto_now_add=True)
     update_time = models.DateTimeField(verbose_name='更新时间', auto_now=True)
 
     class Meta:
-        verbose_name = "安装位置"
-        verbose_name_plural = "安装位置"
+        verbose_name = "作业单位"
+        verbose_name_plural = "作业单位"
         unique_together = (('name', 'district'),)
 
     def __str__(self):
@@ -59,8 +59,6 @@ class Camera(models.Model):
     password = models.CharField(max_length=128, verbose_name='密码', help_text='摄像头连接密码', null=False, default='',
                                 blank=False,
                                 db_index=True)
-    address = models.ForeignKey(Position, on_delete=models.SET_NULL, blank=False, null=True, verbose_name='安装地点',
-                                db_index=True)
     online_time = models.DateTimeField(verbose_name='在线时间', default=timezone.now)
     create_time = models.DateTimeField(verbose_name='创建时间', auto_now_add=True)
     update_time = models.DateTimeField(verbose_name='更新时间', auto_now=True)
@@ -87,14 +85,14 @@ class Department(models.Model):
 
 
 class EventType(models.Model):
-    name = models.CharField(max_length=128, verbose_name='事件类型名称', help_text='事件类型名称，如跨越围栏等', unique=True,
+    name = models.CharField(max_length=128, verbose_name='违章行为', help_text='违章行为名称，如跨越围栏等', unique=True,
                             db_index=True)
     create_time = models.DateTimeField(verbose_name='创建时间', auto_now_add=True)
     update_time = models.DateTimeField(verbose_name='更新时间', auto_now=True)
 
     class Meta:
-        verbose_name = "事件类型"
-        verbose_name_plural = "事件类型"
+        verbose_name = "违章行为"
+        verbose_name_plural = "违章行为"
 
     def __str__(self):
         return self.name
@@ -151,12 +149,12 @@ class Employe(models.Model):
 
 
 class Event(models.Model):
-    # employe = models.ForeignKey(Employe, on_delete=models.SET_NULL, blank=False, null=True, verbose_name='员工姓名',
-    #                             db_index=True)
-    event_type = models.ForeignKey(EventType, on_delete=models.SET_NULL, blank=False, null=True, verbose_name='事件类型',
+    event_type = models.ForeignKey(EventType, on_delete=models.SET_NULL, blank=False, null=True, verbose_name='违章记录',
                                    db_index=True)
     camera = models.ForeignKey(Camera, on_delete=models.SET_NULL, blank=False, null=True, verbose_name='摄像头',
                                db_index=True)
+    position = models.ForeignKey(Position, on_delete=models.SET_NULL, blank=False, null=True, verbose_name='作业单位',
+                                 db_index=True)
     photo_height = models.PositiveIntegerField(blank=True, verbose_name='高度', default=0)
     photo_width = models.PositiveIntegerField(blank=True, verbose_name='宽度', default=0)
     photo = models.ImageField(upload_to="events/%Y-%m-%d/", height_field='photo_height', verbose_name='照片',
@@ -166,8 +164,8 @@ class Event(models.Model):
     update_time = models.DateTimeField(verbose_name='更新时间', auto_now=True)
 
     class Meta:
-        verbose_name = "事件"
-        verbose_name_plural = "事件"
+        verbose_name = "违章记录"
+        verbose_name_plural = "违章记录"
 
     def __str__(self):
-        return self.employe.name
+        return self.event_type.name

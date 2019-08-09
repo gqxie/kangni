@@ -119,8 +119,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',  # 或者使用 mysql.connector.django
         'NAME': 'kangni',
         'USER': 'root',
-        'PASSWORD': 'mychebao',
-        'HOST': '188.188.22.164',
+        'PASSWORD': 'password',
+        'HOST': '127.0.0.1',
         'PORT': '3306',
     }
 }
@@ -271,10 +271,10 @@ SIMPLEUI_ICON = {
     '员工': 'fas fa-user-tie',
     '职务': 'fas fa-user-secret',
     '部门': 'fas fa-university',
-    '区域': 'fas fa-map-marked-alt',
-    '安装位置': 'fas fa-map-marker-alt',
-    '事件': 'fas fa-clock',
-    '事件类型': 'far fa-clock',
+    '作业场所': 'fas fa-map-marked-alt',
+    '作业单位': 'fas fa-map-marker-alt',
+    '违章记录': 'fas fa-clock',
+    '违章行为': 'far fa-clock',
     '摄像头用途': 'fas fa-cog'
 }
 

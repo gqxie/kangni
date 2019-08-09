@@ -148,3 +148,110 @@ Traceback (most recent call last):
     num = row[3]
 IndexError: tuple index out of range
 [2019-08-07 12:53:31,380][Thread-13:18708][task_id:resource.views][views.py:57][ERROR][摄像头不存在！]
+[2019-08-09 19:29:59,849][Thread-9:6076][task_id:django.request][log.py:228][ERROR][Internal Server Error: /resource/event/]
+Traceback (most recent call last):
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\db\models\options.py", line 565, in get_field
+    return self.fields_map[field_name]
+KeyError: 'district'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\contrib\admin\utils.py", line 262, in lookup_field
+    f = _get_non_gfk_field(opts, name)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\contrib\admin\utils.py", line 293, in _get_non_gfk_field
+    field = opts.get_field(name)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\db\models\options.py", line 567, in get_field
+    raise FieldDoesNotExist("%s has no field named '%s'" % (self.object_name, field_name))
+django.core.exceptions.FieldDoesNotExist: Event has no field named 'district'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\core\handlers\exception.py", line 34, in inner
+    response = get_response(request)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\core\handlers\base.py", line 145, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\core\handlers\base.py", line 143, in _get_response
+    response = response.render()
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\template\response.py", line 106, in render
+    self.content = self.rendered_content
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\template\response.py", line 83, in rendered_content
+    content = template.render(context, self._request)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\template\base.py", line 171, in render
+    return self._render(context)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\template\base.py", line 937, in render
+    bit = node.render_annotated(context)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\template\base.py", line 904, in render_annotated
+    return self.render(context)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\template\loader_tags.py", line 150, in render
+    return compiled_parent._render(context)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\template\base.py", line 937, in render
+    bit = node.render_annotated(context)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\template\base.py", line 904, in render_annotated
+    return self.render(context)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\template\loader_tags.py", line 150, in render
+    return compiled_parent._render(context)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\template\base.py", line 937, in render
+    bit = node.render_annotated(context)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\template\base.py", line 904, in render_annotated
+    return self.render(context)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\template\loader_tags.py", line 150, in render
+    return compiled_parent._render(context)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\template\base.py", line 937, in render
+    bit = node.render_annotated(context)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\template\base.py", line 904, in render_annotated
+    return self.render(context)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\template\loader_tags.py", line 150, in render
+    return compiled_parent._render(context)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\template\base.py", line 163, in _render
+    return self.nodelist.render(context)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\template\base.py", line 937, in render
+    bit = node.render_annotated(context)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\template\base.py", line 904, in render_annotated
+    return self.render(context)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\template\defaulttags.py", line 309, in render
+    return nodelist.render(context)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\template\base.py", line 937, in render
+    bit = node.render_annotated(context)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\template\base.py", line 904, in render_annotated
+    return self.render(context)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\template\loader_tags.py", line 62, in render
+    result = block.nodelist.render(context)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\template\base.py", line 937, in render
+    bit = node.render_annotated(context)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\template\base.py", line 904, in render_annotated
+    return self.render(context)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\template\loader_tags.py", line 62, in render
+    result = block.nodelist.render(context)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\template\base.py", line 937, in render
+    bit = node.render_annotated(context)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\template\base.py", line 904, in render_annotated
+    return self.render(context)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\contrib\admin\templatetags\base.py", line 33, in render
+    return super().render(context)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\template\library.py", line 214, in render
+    _dict = self.func(*resolved_args, **resolved_kwargs)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\contrib\admin\templatetags\admin_list.py", line 339, in result_list
+    'results': list(results(cl)),
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\contrib\admin\templatetags\admin_list.py", line 312, in results
+    yield ResultList(form, items_for_result(cl, res, form))
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\contrib\admin\templatetags\admin_list.py", line 306, in __init__
+    super().__init__(*items)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\contrib\admin\templatetags\admin_list.py", line 229, in items_for_result
+    f, attr, value = lookup_field(field_name, result, cl.model_admin)
+  File "D:\pyWorkSpace\kangni\venv\lib\site-packages\django\contrib\admin\utils.py", line 271, in lookup_field
+    value = attr(obj)
+  File "D:\pyWorkSpace\kangni\resource\admin.py", line 169, in district
+    return obj.position.district.name
+AttributeError: 'NoneType' object has no attribute 'district'

@@ -9,14 +9,14 @@ from django.http import JsonResponse
 from django.utils import timezone
 from django.views.decorators.http import require_POST
 
-from resource.models import Event, Camera, EventType
+from resource.models import Event, Camera, EventType, Position
 
 logger = logging.getLogger(__name__)
 
 
 @require_POST
 def addEvent(request):
-    msg = '添加事件失败！'
+    msg = '添加违章记录失败！'
     status = -1
     rst = {
         'status': status,
@@ -44,6 +44,7 @@ def addEvent(request):
 
         camera_id = request.POST.get('cameraId')
         event_type_id = request.POST.get('eventTypeId')
+        position_id = request.POST.get('positionId')
         photo = os.path.join('events', timezone.now().strftime('%Y-%m-%d'), fname)
         photo_height = request.POST.get('photoHeight')
         photo_weight = request.POST.get('photoWeight')
@@ -58,23 +59,31 @@ def addEvent(request):
 
         try:
             event_type = EventType.objects.get(pk=event_type_id)
-        except Camera.DoesNotExist:
-            msg = '事件类型不存在！'
+        except EventType.DoesNotExist:
+            msg = '违章记录不存在！'
+            rst['msg'] = msg
+            logger.error(msg)
+            return JsonResponse(rst)
+        
+        try:
+            postion = Position.objects.get(pk=position_id)
+        except Position.DoesNotExist:
+            msg = '作业单位不存在！'
             rst['msg'] = msg
             logger.error(msg)
             return JsonResponse(rst)
 
-        event = Event(event_type=event_type, camera=camera, photo=photo, photo_height=photo_height,
+        event = Event(event_type=event_type, camera=camera, photo=photo,position=postion, photo_height=photo_height,
                       photo_width=photo_weight)
         event.save()
     except Exception as e:
-        logger.error('添加事件失败！', e)
+        logger.error('添加违章记录失败！', e)
         return JsonResponse(rst)
 
     rst = {
         'status': 0,
-        'msg': '添加事件成功！',
+        'msg': '添加违章记录成功！',
         'pic_path': pic_path
     }
-    logger.info('添加事件成功，图片路径：%s' % pic_path)
+    logger.info('添加违章记录成功，图片路径：%s' % pic_path)
     return JsonResponse(rst)

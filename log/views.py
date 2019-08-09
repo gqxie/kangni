@@ -40,7 +40,7 @@ def getUser(request):
         LEFT JOIN resource_eventtype reet ON rev.event_type_id = reet.id
         LEFT JOIN resource_camera reca ON rev.camera_id = reca.id
         LEFT JOIN resource_camerausetype recat ON reca.useType_id = recat.id
-        LEFT JOIN resource_position repo ON reca.address_id = repo.id
+        LEFT JOIN resource_position repo ON rev.position_id = repo.id
         LEFT JOIN resource_district redi ON repo.district_id = redi.id
         ORDER BY
             rev.update_time DESC limit {},{};"""
@@ -103,7 +103,7 @@ def bar():
                 tmp_list[index] = row[2]
 
         bar.add_yaxis(event_type, tmp_list)
-    bar.set_global_opts(title_opts=opts.TitleOpts(title="不规范行为统计"), toolbox_opts=opts.ToolboxOpts(is_show=False,
+    bar.set_global_opts(title_opts=opts.TitleOpts(title="违章记录统计"), toolbox_opts=opts.ToolboxOpts(is_show=False,
                                                                                                   feature=opts.ToolBoxFeatureOpts(
                                                                                                       restore=None,
                                                                                                       data_zoom=None)))
@@ -167,7 +167,7 @@ def pie_base():
     c = (
         Pie()
             .add("", rst)
-            .set_global_opts(title_opts=opts.TitleOpts(title="事件类型占比"))
+            .set_global_opts(title_opts=opts.TitleOpts(title="违章记录占比"))
             .set_series_opts(label_opts=opts.LabelOpts(formatter="{b}: {c}"))
     )
     return c.render_embed()
@@ -200,7 +200,7 @@ def timeline_bar():
 
     for day in name_list:
         bar = Bar()
-        bar.add_xaxis(['不规范行为'])
+        bar.add_xaxis(['违章记录'])
 
         for i in range(len(event_type_list)):
             event_type_name = event_type_list[i]
