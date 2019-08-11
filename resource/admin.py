@@ -61,7 +61,7 @@ class CameraAdmin(ImportExportActionModelAdmin):
     state.short_description = u'状态'
     resource_class = ProxyResource
     list_display = (
-        'id', 'name', 'useType', 'ip', 'username', 'password', 'state', 'full_online_time',
+        'id', 'name', 'useType', 'ip', 'username', 'password', 'district','state', 'full_online_time',
         'full_create_time')
     search_fields = ('name', 'useType')
     list_per_page = 10
@@ -191,8 +191,8 @@ class EventAdmin(ImportExportActionModelAdmin):
     upload_img.allow_tags = True
     readonly_fields = ['upload_img']
     resource_class = EventResource
-    list_display = ('id', 'event_type', 'district', 'position', 'camera', 'upload_img', 'full_create_time')
+    list_display = ('id', 'employe','event_type', 'district', 'position', 'camera', 'upload_img', 'full_create_time')
     list_per_page = 10
     list_display_links = ('id',)
-    list_filter = ('event_type', 'camera')
-    list_editable = ('event_type', 'camera')
+    list_filter = ('event_type', 'camera','employe')
+    list_editable = ('event_type', 'camera','employe')

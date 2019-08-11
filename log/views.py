@@ -24,31 +24,30 @@ def getUser(request):
     start = int(limit) * (int(page) - 1)
     cursor = connection.cursor()
     sql = """SELECT
-            rev.id eventId,
-            reet.`name` eventType,
-            reca.`name` cameraName,
-            recat.`name` cameraUseType,
-            redi.`name` districtName,
-            repo.`name` positionName,
-            rev.photo,
-            DATE_FORMAT(
-                rev.create_time,
-                '%Y-%m-%d %H:%i:%S'
-            ) createTime
-        FROM
-            resource_event rev
+        rev.id eventId,
+        IFNULL(reem.`name`,'')employeName,
+        reet.`name` eventType,
+        reca.`name` cameraName,
+        recat.`name` cameraUseType,
+        redi.`name` districtName,
+        repo.`name` positionName,
+        rev.photo,
+        DATE_FORMAT( rev.create_time, '%Y-%m-%d %H:%i:%S' ) createTime 
+    FROM
+        resource_event rev
         LEFT JOIN resource_eventtype reet ON rev.event_type_id = reet.id
         LEFT JOIN resource_camera reca ON rev.camera_id = reca.id
         LEFT JOIN resource_camerausetype recat ON reca.useType_id = recat.id
         LEFT JOIN resource_position repo ON reca.position_id = repo.id
-        LEFT JOIN resource_district redi ON repo.district_id = redi.id
-        ORDER BY
-            rev.update_time DESC limit {},{};"""
+        LEFT JOIN resource_district redi ON repo.district_id = redi.id 
+        LEFT join resource_employe reem on rev.employe_id=reem.id
+    ORDER BY
+        rev.update_time DESC limit {},{};"""
     sql = sql.format(start, limit)
     cursor.execute(sql)
     rows = cursor.fetchall()
     data_list = []
-    columns = ['eventId', 'eventType', 'cameraName',
+    columns = ['eventId', 'employeName','eventType', 'cameraName',
                'cameraUseType', 'districtName', 'positionName', 'photo', 'createTime']
     for row in rows:
         tmp_dict = {}

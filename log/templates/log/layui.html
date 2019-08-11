@@ -13,6 +13,11 @@
         body {
             margin: 10px;
         }
+
+        .layui-table-cell{
+            height:120px!important;
+            line-height: 120px!important;
+        }
     </style>
 </head>
 <body>
@@ -40,16 +45,22 @@
             , even: true //开启隔行背景
             , size: 'sm' //小尺寸的表格
             , cols: [[ //表头
-                {#{type: 'numbers',fixed: 'left'}, #}
                 {type: 'checkbox', fixed: 'left'}
                 , {field: 'eventId', title: '序号', width: 80, sort: true, fixed: 'left'}
+                , {field: 'employeName', title: '违章人员', width: 120}
                 , {field: 'districtName', title: '作业场所', width: 120}
                 , {field: 'positionName', title: '作业单位', width: 120}
                 , {field: 'eventType', title: '违章行为', width: 120}
                 {#, {field: 'cameraName', title: '摄像头名称', width: 120}#}
                 {#, {field: 'cameraUseType', title: '摄像头用途', width: 120}#}
                 , {
-                    field: 'photo', title: '违章行为抓拍', width: 450, templet: function (d) {
+                    field: 'photo2', title: '违章行为抓拍', width: 180, templet: function (d) {
+                        var uri = 'media' + d.photo.split('media')[1];
+                        return '<div><img height="120" weight="80" src="'+d.photo+'"/>' + '</div>'
+                    }
+                }
+                , {
+                    field: 'photo', title: '图片链接', width: 300, templet: function (d) {
                         var uri = 'media' + d.photo.split('media')[1];
                         return '<div><a href="' + uri + '" class="layui-table-link" target="_blank">' + d.photo + '</a></div>'
                     }
