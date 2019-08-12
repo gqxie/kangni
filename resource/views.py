@@ -9,7 +9,7 @@ from django.http import JsonResponse
 from django.utils import timezone
 from django.views.decorators.http import require_POST
 
-from resource.models import Event, Camera, EventType, Position
+from resource.models import Event, Camera, EventType, Position, Employe
 
 logger = logging.getLogger(__name__)
 
@@ -44,7 +44,7 @@ def addEvent(request):
 
         camera_id = request.POST.get('cameraId')
         event_type_id = request.POST.get('eventTypeId')
-        # position_id = request.POST.get('positionId')
+        # employe_id = request.POST.get('employeId')
         photo = os.path.join('events', timezone.now().strftime('%Y-%m-%d'), fname)
         photo_height = request.POST.get('photoHeight')
         photo_weight = request.POST.get('photoWeight')
@@ -64,7 +64,14 @@ def addEvent(request):
             rst['msg'] = msg
             logger.error(msg)
             return JsonResponse(rst)
-        
+
+        # try:
+        #     employe = Employe.objects.get(pk=employe_id)
+        # except Employe.DoesNotExist:
+        #     msg = '员工不存在！'
+        #     rst['msg'] = msg
+        #     logger.error(msg)
+        #     return JsonResponse(rst)
         event = Event(event_type=event_type, camera=camera, photo=photo, photo_height=photo_height,
                       photo_width=photo_weight)
         event.save()

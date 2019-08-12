@@ -4,3 +4,5 @@ venv/
 media/events/
 resource/migrations/
 logs/
+media/
+*.log
