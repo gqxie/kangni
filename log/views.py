@@ -68,6 +68,52 @@ def getUser(request):
     }
     return JsonResponse(rst)
 
+def getAllEvent(request):
+    cursor = connection.cursor()
+    sql = """SELECT
+        rev.id eventId,
+        IFNULL(reem.`name`,'')employeName,
+        reet.`name` eventType,
+        reca.`name` cameraName,
+        recat.`name` cameraUseType,
+        redi.`name` districtName,
+        repo.`name` positionName,
+        rev.photo,
+        DATE_FORMAT( rev.create_time, '%Y-%m-%d %H:%i:%S' ) createTime 
+    FROM
+        resource_event rev
+        LEFT JOIN resource_eventtype reet ON rev.event_type_id = reet.id
+        LEFT JOIN resource_camera reca ON rev.camera_id = reca.id
+        LEFT JOIN resource_camerausetype recat ON reca.useType_id = recat.id
+        LEFT JOIN resource_position repo ON reca.position_id = repo.id
+        LEFT JOIN resource_district redi ON repo.district_id = redi.id 
+        LEFT join resource_employe reem on rev.employe_id=reem.id
+    ORDER BY
+        rev.update_time DESC;"""
+    cursor.execute(sql)
+    rows = cursor.fetchall()
+    data_list = []
+    columns = ['eventId', 'employeName','eventType', 'cameraName',
+               'cameraUseType', 'districtName', 'positionName', 'photo', 'createTime']
+    for row in rows:
+        tmp_dict = {}
+        for col in columns:
+            tmp_dict[col] = row[columns.index(col)]
+            if 'photo' == col:
+                tmp_dict[col] = '%s%s%s' % (settings.DOMAIN_NAME, settings.MEDIA_URL, row[columns.index(col)])
+        data_list.append(tmp_dict)
+
+    count_sql = 'select count(1) from resource_event;'
+    cursor.execute(count_sql)
+    count = cursor.fetchone()[0]
+    rst = {
+        'code': 0,
+        'msg': '',
+        'count': count,
+        'data': data_list
+    }
+    return JsonResponse(rst)
+
 
 def bar():
     cursor = connection.cursor()

@@ -7,5 +7,6 @@ from . import views
 urlpatterns = [
     url(r'^layui/$', views.layui, name='layui'),
     url(r'^layui/getUser$', views.getUser),
+    url(r'^layui/getAllEvent$', views.getAllEvent),
     url(r'^$', views.index, name='index'),
 ]

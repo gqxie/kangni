@@ -21,8 +21,11 @@
     </style>
 </head>
 <body>
-
 <table class="layui-hide" id="demo"></table>
+<div style="display: none;">
+    <table id="data_export">
+    </table>
+</div>
 <script src="{% static 'layui/layui.all.js' %}" charset="utf-8"></script>
 <script>
     layui.config({
@@ -30,10 +33,11 @@
     });
 
     layui.use(['table'], function () {
-        var table = layui.table; //表格
+        var table = layui.table,
+            $ = layui.jquery;//表格
 
         //执行一个 table 实例
-        table.render({
+        var ins = table.render({
             elem: '#demo'
             //, height: 'full-200'
             , url: 'getUser' //数据接口
@@ -54,12 +58,41 @@
                 , {
                     field: 'photo', title: '违章行为抓拍', width: 120, templet: function (d) {
                         var uri = 'media' + d.photo.split('media')[1];
-                        return '<div><a href="' + uri + '" class="layui-table-link" target="_blank">' + '<img height="120" weight="80" src="' + d.photo + '"/>' + '</a></div>'
+                        return '<a href="' + uri + '" class="layui-table-link" target="_blank">' + '<img height="120" weight="80" src="' + d.photo + '"/>' + '</a>'
                     }
                 }
                 , {field: 'createTime', title: '违章时间', width: 180}
             ]]
         });
+
+        var ins1 = table.render({
+            elem: '#data_export',
+            url: "getAllEvent", //数据接口
+            method: 'post',
+            title: '违章记录报告',
+            where: {
+                mycode: "all"
+            },
+            limit: 10,
+            cols: [[
+                {field: 'eventId', title: '序号', width: 80, sort: true, fixed: 'left'}
+                , {field: 'employeName', title: '违章人员', width: 120}
+                , {field: 'districtName', title: '作业场所', width: 120}
+                , {field: 'positionName', title: '作业单位', width: 120}
+                , {field: 'eventType', title: '违章行为', width: 120}
+                , {field: 'photo', title: '违章抓拍照片链接', width: 120}
+                , {field: 'createTime', title: '违章时间', width: 180}
+            ]],
+            done: function (res, curr, count) {
+                exportData = res.data;
+            }
+        });
+
+        $('div[title="导出"]').click(function () {
+            $(this).attr('lay-event', 'ads');
+            //导出按钮
+            table.exportFile(ins1.config.id, exportData, 'xls');
+        })
     });
 </script>
 </body>
