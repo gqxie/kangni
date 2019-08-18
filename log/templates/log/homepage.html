@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<style>
+    div {
+        display: flex
+    }
+
+</style>
+<head>
+    <meta charset="utf-8">
+{#    <meta http-equiv="refresh" content="10">#}
+    <title>ECharts</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.2.1/echarts.min.js"></script>
+    <script src="https://echarts.baidu.com/dist/echarts-gl.min.js"></script>
+    <script type="text/javascript " src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
+    <script type="text/javascript " src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>
+    <script src="https://cdn.bootcss.com/wordcloud2.js/1.1.0/wordcloud2.min.js"></script>
+</head>
+
+<body>
+<div>
+    <div style="width: 50%;">{{ bar3d_base|safe }}</div>
+    <div style="width: 50%;">{{ grid_vertical|safe }}</div>
+</div>
+<div>
+    <div style="width: 50%;">{{ line_areastyle_boundary_gap|safe }}</div>
+    <div style="width: 50%;">{{ line_markline|safe }}</div>
+</div>
+</body>
+
+</html>
