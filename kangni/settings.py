@@ -119,8 +119,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',  # 或者使用 mysql.connector.django
         'NAME': 'kangni',
         'USER': 'root',
-        'PASSWORD': 'password',
-        'HOST': '127.0.0.1',
+        'PASSWORD': 'mychebao',
+        'HOST': '188.188.22.164',
         'PORT': '3306',
     }
 }
@@ -263,7 +263,12 @@ LOGGING = {
     },
 }
 
+
+SIMPLEUI_HOME_PAGE = 'log/'
+SIMPLEUI_HOME_ICON = 'fas fa-home'
 SIMPLEUI_ANALYSIS = True
+# 粒子动画效果
+SIMPLEUI_LOGIN_PARTICLES = False
 
 SIMPLEUI_ICON = {
     '综合管理': 'fas fa-desktop',

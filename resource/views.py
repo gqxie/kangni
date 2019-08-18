@@ -1,5 +1,4 @@
 import logging
-import logging
 import os
 import random
 
@@ -9,10 +8,9 @@ from django.http import JsonResponse
 from django.utils import timezone
 from django.views.decorators.http import require_POST
 
-from resource.models import Event, Camera, EventType, Position, Employe
+from resource.models import Event, Camera, EventType
 
 logger = logging.getLogger(__name__)
-
 
 @require_POST
 def addEvent(request):
