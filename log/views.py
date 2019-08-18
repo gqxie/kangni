@@ -148,7 +148,7 @@ def bar():
         if event_type not in event_type_list:
             event_type_list.append(event_type)
 
-    bar = Bar()
+    bar = Bar(init_opts=opts.InitOpts(height="350px"))
     bar.add_xaxis(name_list)
     for event_type in event_type_list:
         tmp_list = [0 for i in range(len(name_list))]
@@ -188,7 +188,7 @@ def line():
         if event_type not in event_type_list:
             event_type_list.append(event_type)
 
-    line = Line()
+    line = Line(init_opts=opts.InitOpts(height="350px"))
     line.add_xaxis(name_list)
     for event_type in event_type_list:
         tmp_list = [0 for i in range(len(name_list))]
@@ -220,7 +220,7 @@ def pie_base():
         tmp.append(row[1])
         rst.append(tmp)
     c = (
-        Pie()
+        Pie(init_opts=opts.InitOpts(height="350px"))
             .add("", rst)
             .set_global_opts(title_opts=opts.TitleOpts(title="违章记录占比"))
             .set_series_opts(label_opts=opts.LabelOpts(formatter="{b}: {c}"))
@@ -251,7 +251,7 @@ def timeline_bar():
         if event_type not in event_type_list:
             event_type_list.append(event_type)
 
-    tl = Timeline()
+    tl = Timeline(init_opts=opts.InitOpts(height="350px"))
 
     for day in name_list:
         bar = Bar()

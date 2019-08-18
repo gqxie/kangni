@@ -1,7 +1,14 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <style>
-    div{display:flex}
+    div {
+        display: flex
+    }
+
+    body {
+        overflow: -moz-scrollbars-none;
+        overflow-x: hidden;
+    }
 </style>
 <head>
     <meta charset="utf-8">
@@ -14,13 +21,13 @@
 </head>
 
 <body>
-<div >
-<div style="width: 50%;">{{ bar|safe }}</div>
-<div style="width: 50%;">{{ line|safe }}</div>
+<div>
+    <div style="width: 50%;">{{ bar|safe }}</div>
+    <div style="width: 50%;">{{ line|safe }}</div>
 </div>
-<div >
-<div style="width: 50%;">{{ pie_base|safe }}</div>
-<div style="width: 50%;">{{ timeline_bar|safe }}</div>
+<div>
+    <div style="width: 50%;">{{ pie_base|safe }}</div>
+    <div style="width: 50%;">{{ timeline_bar|safe }}</div>
 </div>
 </body>
 
