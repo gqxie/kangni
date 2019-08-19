@@ -21,6 +21,9 @@ def homePage(request):
                "line_areastyle_boundary_gap": line_areastyle_boundary_gap(), "line_markline": line_markline()}
     return render(request, 'log/homepage.html', context)
 
+def vuePage(request):
+    context = {}
+    return render(request, 'log/vuepage.html', context)
 
 def layui(request):
     context = {}

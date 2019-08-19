@@ -5,7 +5,9 @@ from django.views.generic import RedirectView
 from . import views
 
 urlpatterns = [
-    url(r'^homePage/$', views.homePage, name='layui'),
+    url(r'^vuePage/getAllEvent', views.getAllEvent, name='getAllEvent'),
+    url(r'^vuePage/$', views.vuePage, name='vuePage'),
+    url(r'^homePage/$', views.homePage, name='homePage'),
     url(r'^layui/$', views.layui, name='layui'),
     url(r'^layui/getUser$', views.getUser),
     url(r'^layui/getAllEvent$', views.getAllEvent),
