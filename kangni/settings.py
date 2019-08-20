@@ -291,7 +291,7 @@ SIMPLEUI_CONFIG = {
         'models': [
             {
                 'name': '报表',
-                'url': 'log/layui',
+                'url': 'log/eventReport',
                 'icon': 'fas fa-chart-bar'
             }, {
                 'name': '可视化报表',

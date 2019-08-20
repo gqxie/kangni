@@ -55,6 +55,15 @@ server
 }
 ```
 
+修改D:\Program Files\Python36\lib\site-packages\django\db\backends\mysql\operations.py", line 198
+```code
+if timezone.is_aware(value):
+    # if settings.USE_TZ:
+    value = timezone.make_naive(value, self.connection.timezone)
+    # else:
+    #     raise ValueError("MySQL backend does not support timezone-aware datetimes when USE_TZ is False.")
+return str(value)
+```
 
 # 启动服务
 

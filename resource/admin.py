@@ -194,5 +194,5 @@ class EventAdmin(ImportExportActionModelAdmin):
     list_display = ('id', 'employe','event_type', 'district', 'position', 'camera', 'upload_img', 'full_create_time')
     list_per_page = 10
     list_display_links = ('id',)
-    list_filter = ('event_type', 'camera','employe')
+    list_filter = ('event_type', 'camera','employe','create_time')
     list_editable = ('event_type', 'camera','employe')

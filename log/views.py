@@ -25,9 +25,9 @@ def vuePage(request):
     context = {}
     return render(request, 'log/vuepage.html', context)
 
-def layui(request):
+def eventReport(request):
     context = {}
-    return render(request, 'log/layui.html', context)
+    return render(request, 'log/eventReport.html', context)
 
 
 def getUser(request):
@@ -81,7 +81,10 @@ def getUser(request):
     return JsonResponse(rst)
 
 
-def getAllEvent(request):
+def getPageEvent(request):
+    page = request.GET.get('page')
+    size = request.GET.get('size')
+    start = int(size) * (int(page) - 1)
     cursor = connection.cursor()
     sql = """SELECT
         rev.id eventId,
@@ -102,7 +105,8 @@ def getAllEvent(request):
         LEFT JOIN resource_district redi ON repo.district_id = redi.id 
         LEFT join resource_employe reem on rev.employe_id=reem.id
     ORDER BY
-        rev.update_time DESC;"""
+        rev.update_time DESC limit {},{};"""
+    sql = sql.format(start, size)
     cursor.execute(sql)
     rows = cursor.fetchall()
     data_list = []
@@ -120,8 +124,6 @@ def getAllEvent(request):
     cursor.execute(count_sql)
     count = cursor.fetchone()[0]
     rst = {
-        'code': 0,
-        'msg': '',
         'count': count,
         'data': data_list
     }

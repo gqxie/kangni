@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+{% load static %}
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>违章记录报告</title>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <style>
+        body {
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <template>
+        <div class="block">
+            <el-date-picker
+                    v-model="value2"
+                    type="datetimerange"
+                    :picker-options="pickerOptions"
+                    range-separator="-"
+                    start-placeholder="违章时间"
+                    end-placeholder="违章时间"
+                    align="right">
+            </el-date-picker>
+            <el-button type="primary" icon="el-icon-search" @click="onSubmit">搜索</el-button>
+        </div>
+        <el-table
+                :data="tableData"
+                stripe
+                border
+                style="width: 100%">
+            <el-table-column
+                    type="index"
+                    width="50">
+            </el-table-column>
+            <el-table-column
+                    prop="eventId"
+                    label="序号"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="employeName"
+                    label="违章人员"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="districtName"
+                    label="作业场所"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="positionName"
+                    label="作业单位"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="eventType"
+                    label="违章行为"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="photo"
+                    label="违章行为抓拍"
+                    width="180">
+                <template slot-scope="scope">
+                    <el-image
+                            style="width: 80px; height: 100px"
+                            :src="scope.row.photo"
+                            fit="fill"
+                            preview-src-list=[scope.row.photo]></el-image>
+                </template>
+            </el-table-column>
+            <el-table-column
+                    prop="createTime"
+                    label="违章时间"
+                    width="180">
+            </el-table-column>
+        </el-table>
+        <div class="block">
+            <el-pagination
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page="currentPage"
+                    :page-sizes="[10, 20, 50, 100]"
+                    :page-size="10"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="totalNum">
+            </el-pagination>
+        </div>
+    </template>
+</div>
+<table class="layui-hide" id="demo"></table>
+<div style="display: none;">
+    <table id="data_export">
+    </table>
+</div>
+<!-- import Vue before Element -->
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<!-- import JavaScript -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script src="https://unpkg.com/axios@0.19.0/dist/axios.min.js"></script>
+<script>
+
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+                pickerOptions: {
+                    shortcuts: [{
+                        text: '最近一周',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                            picker.$emit('pick', [start, end]);
+                        }
+                    }, {
+                        text: '最近一个月',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                            picker.$emit('pick', [start, end]);
+                        }
+                    }, {
+                        text: '最近三个月',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+                            picker.$emit('pick', [start, end]);
+                        }
+                    }]
+                },
+                value2: '',
+                tableData: [],
+                currentPage: 1,
+                currentSize: 10,
+                totalNum: 0
+            };
+        },
+        created() {
+            const _this = this;
+            _this.getPageEvent(_this.currentPage, _this.currentSize)
+        },
+        methods: {
+            onSubmit() {
+                startDateTime = this.value2[0];
+                endDateTime = this.value2[1];
+            },
+            getPageEvent(page, size) {
+                const _this = this;
+                axios({
+                    method: 'get',
+                    url: 'getPageEvent' + '?page=' + page + '&size=' + size
+                }).then(function (resp) {
+                    _this.tableData = resp.data.data;
+                    _this.totalNum = resp.data.count;
+                }).catch(resp => {
+                    console.log('请求失败：' + resp.status + ',' + resp.statusText);
+                });
+            },
+            handleSizeChange(val) {
+                const _this = this;
+                _this.currentSize = val;
+                _this.currentPage = 1;
+                _this.getPageEvent(_this.currentPage, _this.currentSize);
+            },
+            handleCurrentChange(val) {
+                const _this = this;
+                _this.currentPage = val;
+                _this.getPageEvent(_this.currentPage, _this.currentSize);
+            }
+        }
+    });
+
+</script>
+</body>
+</html>

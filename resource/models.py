@@ -162,7 +162,7 @@ class Event(models.Model):
     photo = models.ImageField(upload_to="events/%Y-%m-%d/", height_field='photo_height', verbose_name='照片',
                               width_field='photo_width',
                               default='event.png')
-    create_time = models.DateTimeField(verbose_name='创建时间', auto_now_add=True)
+    create_time = models.DateTimeField(verbose_name='违章时间', auto_now_add=True)
     update_time = models.DateTimeField(verbose_name='更新时间', auto_now=True)
 
     class Meta:
