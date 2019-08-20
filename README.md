@@ -68,3 +68,5 @@ return str(value)
 # 启动服务
 
 `python manage.py runserver 8000`
+
+https://github.com/NLRX/Vue-Components-Library/blob/master/ExportExcel/index.vue
