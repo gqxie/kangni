@@ -1,11 +1,13 @@
 # Create your views here.
 # encoding: utf-8
+import datetime
 import random
 
 from django.conf import settings
 from django.db import connection
 from django.http import JsonResponse
 from django.shortcuts import render
+from django.utils import timezone
 from example.commons import Faker
 from pyecharts import options as opts
 from pyecharts.charts import Bar, Pie, WordCloud, Line, Timeline, Bar3D, Grid
@@ -16,15 +18,15 @@ def index(request):
     return render(request, 'log/pyecharts.html', context)
 
 
+# def homePageBak(request):
+#     context = {"bar3d_base": bar3d_base(), "grid_vertical": grid_vertical(),
+#                "line_areastyle_boundary_gap": line_areastyle_boundary_gap(), "line_markline": line_markline()}
+#     return render(request, 'log/homepage_bak.html', context)
+
+
 def homePage(request):
-    context = {"bar3d_base": bar3d_base(), "grid_vertical": grid_vertical(),
-               "line_areastyle_boundary_gap": line_areastyle_boundary_gap(), "line_markline": line_markline()}
-    return render(request, 'log/homepage.html', context)
-
-
-def homePage2(request):
     context = {}
-    return render(request, 'log/homePage2.html', context)
+    return render(request, 'log/homePage.html', context)
 
 
 def vuePage(request):
@@ -67,6 +69,12 @@ def getAllCamera(request):
         tmp_dict = {}
         for col in columns:
             tmp_dict[col] = row[columns.index(col)]
+        online_time = tmp_dict['onlineTime']
+        now = datetime.datetime.now()
+        online_time = datetime.datetime.strptime(online_time, "%Y-%m-%d %H:%M:%S")
+        duration = (now - online_time).seconds
+        state = u'在线' if duration < 60 else u'离线'
+        tmp_dict['state'] = state
         data_list.append(tmp_dict)
 
     count_sql = '''select count(1) from resource_camera;'''
@@ -349,112 +357,112 @@ def wc():
     return myWordCloud.render_embed()
 
 
-def bar3d_base():
-    data = [(i, j, random.randint(0, 12)) for i in range(6) for j in range(24)]
-    c = (Bar3D(init_opts=opts.InitOpts(height="350px"))
-        .add(
-        "",
-        [[d[1], d[0], d[2]] for d in data],
-        xaxis3d_opts=opts.Axis3DOpts(Faker.clock, type_="category"),
-        yaxis3d_opts=opts.Axis3DOpts(Faker.week_en, type_="category"),
-        zaxis3d_opts=opts.Axis3DOpts(type_="value"),
-    )
-        .set_global_opts(
-        visualmap_opts=opts.VisualMapOpts(max_=20),
-        title_opts=opts.TitleOpts(title="图表一"),
-    )
-    )
-    return c.render_embed()
-
-
-def grid_vertical() -> Grid:
-    bar = (
-        Bar()
-            .add_xaxis(Faker.choose())
-            .add_yaxis("商家A", Faker.values())
-            .add_yaxis("商家B", Faker.values())
-            .set_global_opts(title_opts=opts.TitleOpts(title="图表二"))
-    )
-    line = (
-        Line()
-            .add_xaxis(Faker.choose())
-            .add_yaxis("商家A", Faker.values())
-            .add_yaxis("商家B", Faker.values())
-            .set_global_opts(
-            title_opts=opts.TitleOpts(title="", pos_top="48%"),
-            legend_opts=opts.LegendOpts(pos_top="48%"),
-        )
-    )
-
-    grid = (
-        Grid(init_opts=opts.InitOpts(height="350px"))
-            .add(bar, grid_opts=opts.GridOpts(pos_bottom="60%"))
-            .add(line, grid_opts=opts.GridOpts(pos_top="60%"))
-    )
-    return grid.render_embed()
-
-
-def line_areastyle_boundary_gap() -> Line:
-    c = (
-        Line(init_opts=opts.InitOpts(height="350px"))
-            .add_xaxis(Faker.choose())
-            .add_yaxis("商家A", Faker.values(), is_smooth=True)
-            .add_yaxis("商家B", Faker.values(), is_smooth=True)
-            .set_series_opts(
-            areastyle_opts=opts.AreaStyleOpts(opacity=0.5),
-            label_opts=opts.LabelOpts(is_show=False),
-        )
-            .set_global_opts(
-            title_opts=opts.TitleOpts(title="图表三"),
-            xaxis_opts=opts.AxisOpts(
-                axistick_opts=opts.AxisTickOpts(is_align_with_label=True),
-                is_scale=False,
-                boundary_gap=False,
-            ),
-        )
-    )
-    return c.render_embed()
-
-
-def line_markline() -> Line:
-    c1 = (
-        Line()
-            .add_xaxis(Faker.choose())
-            .add_yaxis("商家A", Faker.values(), is_smooth=True)
-            .add_yaxis("商家B", Faker.values(), is_smooth=True)
-            .set_series_opts(
-            areastyle_opts=opts.AreaStyleOpts(opacity=0.5),
-            label_opts=opts.LabelOpts(is_show=False),
-        )
-            .set_global_opts(
-            title_opts=opts.TitleOpts(title="图表四"),
-            xaxis_opts=opts.AxisOpts(
-                axistick_opts=opts.AxisTickOpts(is_align_with_label=True),
-                is_scale=False,
-                boundary_gap=False,
-            ),
-        )
-    )
-
-    c2 = (
-        Line()
-            .add_xaxis(Faker.choose())
-            .add_yaxis(
-            "商家A",
-            Faker.values(),
-            markline_opts=opts.MarkLineOpts(data=[opts.MarkLineItem(type_="average")]),
-        )
-            .add_yaxis(
-            "商家B",
-            Faker.values(),
-            markline_opts=opts.MarkLineOpts(data=[opts.MarkLineItem(type_="average")]),
-        )
-            .set_global_opts(title_opts=opts.TitleOpts(title=""))
-    )
-
-    grid = (
-        Grid(init_opts=opts.InitOpts(height="350px"))
-            .add(c1, grid_opts=opts.GridOpts(pos_bottom="60%"))
-            .add(c2, grid_opts=opts.GridOpts(pos_top="60%"))
-    )
-    return grid.render_embed()
+# def bar3d_base():
+#     data = [(i, j, random.randint(0, 12)) for i in range(6) for j in range(24)]
+#     c = (Bar3D(init_opts=opts.InitOpts(height="350px"))
+#         .add(
+#         "",
+#         [[d[1], d[0], d[2]] for d in data],
+#         xaxis3d_opts=opts.Axis3DOpts(Faker.clock, type_="category"),
+#         yaxis3d_opts=opts.Axis3DOpts(Faker.week_en, type_="category"),
+#         zaxis3d_opts=opts.Axis3DOpts(type_="value"),
+#     )
+#         .set_global_opts(
+#         visualmap_opts=opts.VisualMapOpts(max_=20),
+#         title_opts=opts.TitleOpts(title="图表一"),
+#     )
+#     )
+#     return c.render_embed()
+#
+#
+# def grid_vertical() -> Grid:
+#     bar = (
+#         Bar()
+#             .add_xaxis(Faker.choose())
+#             .add_yaxis("商家A", Faker.values())
+#             .add_yaxis("商家B", Faker.values())
+#             .set_global_opts(title_opts=opts.TitleOpts(title="图表二"))
+#     )
+#     line = (
+#         Line()
+#             .add_xaxis(Faker.choose())
+#             .add_yaxis("商家A", Faker.values())
+#             .add_yaxis("商家B", Faker.values())
+#             .set_global_opts(
+#             title_opts=opts.TitleOpts(title="", pos_top="48%"),
+#             legend_opts=opts.LegendOpts(pos_top="48%"),
+#         )
+#     )
+#
+#     grid = (
+#         Grid(init_opts=opts.InitOpts(height="350px"))
+#             .add(bar, grid_opts=opts.GridOpts(pos_bottom="60%"))
+#             .add(line, grid_opts=opts.GridOpts(pos_top="60%"))
+#     )
+#     return grid.render_embed()
+#
+#
+# def line_areastyle_boundary_gap() -> Line:
+#     c = (
+#         Line(init_opts=opts.InitOpts(height="350px"))
+#             .add_xaxis(Faker.choose())
+#             .add_yaxis("商家A", Faker.values(), is_smooth=True)
+#             .add_yaxis("商家B", Faker.values(), is_smooth=True)
+#             .set_series_opts(
+#             areastyle_opts=opts.AreaStyleOpts(opacity=0.5),
+#             label_opts=opts.LabelOpts(is_show=False),
+#         )
+#             .set_global_opts(
+#             title_opts=opts.TitleOpts(title="图表三"),
+#             xaxis_opts=opts.AxisOpts(
+#                 axistick_opts=opts.AxisTickOpts(is_align_with_label=True),
+#                 is_scale=False,
+#                 boundary_gap=False,
+#             ),
+#         )
+#     )
+#     return c.render_embed()
+#
+#
+# def line_markline() -> Line:
+#     c1 = (
+#         Line()
+#             .add_xaxis(Faker.choose())
+#             .add_yaxis("商家A", Faker.values(), is_smooth=True)
+#             .add_yaxis("商家B", Faker.values(), is_smooth=True)
+#             .set_series_opts(
+#             areastyle_opts=opts.AreaStyleOpts(opacity=0.5),
+#             label_opts=opts.LabelOpts(is_show=False),
+#         )
+#             .set_global_opts(
+#             title_opts=opts.TitleOpts(title="图表四"),
+#             xaxis_opts=opts.AxisOpts(
+#                 axistick_opts=opts.AxisTickOpts(is_align_with_label=True),
+#                 is_scale=False,
+#                 boundary_gap=False,
+#             ),
+#         )
+#     )
+#
+#     c2 = (
+#         Line()
+#             .add_xaxis(Faker.choose())
+#             .add_yaxis(
+#             "商家A",
+#             Faker.values(),
+#             markline_opts=opts.MarkLineOpts(data=[opts.MarkLineItem(type_="average")]),
+#         )
+#             .add_yaxis(
+#             "商家B",
+#             Faker.values(),
+#             markline_opts=opts.MarkLineOpts(data=[opts.MarkLineItem(type_="average")]),
+#         )
+#             .set_global_opts(title_opts=opts.TitleOpts(title=""))
+#     )
+#
+#     grid = (
+#         Grid(init_opts=opts.InitOpts(height="350px"))
+#             .add(c1, grid_opts=opts.GridOpts(pos_bottom="60%"))
+#             .add(c2, grid_opts=opts.GridOpts(pos_top="60%"))
+#     )
+#     return grid.render_embed()

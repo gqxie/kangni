@@ -14,11 +14,20 @@
             margin: 10px;
         }
 
+        .el-main {
+            padding-bottom: 100px;
+        }
+
         .el-footer {
+            position: fixed;
+            height: 100px;
             text-align: center;
             left: 0;
             right: 0;
             bottom: 0;
+        }
+        .el-drawer__body{
+            margin-left: 20px;
         }
     </style>
 </head>
@@ -56,17 +65,50 @@
                             width="180">
                     </el-table-column>
                     <el-table-column
-                            prop="onlineTime"
-                            label="在线时间"
-                            width="180">
+                            prop="state"
+                            label="状态"
+                            width="120">
+                        <template slot-scope="scope">
+                            <el-tag
+                                    :type="scope.row.state === '在线' ? 'success' : 'danger'"
+                                    disable-transitions>{% templatetag openvariable %}
+                                scope.row.state {% templatetag closevariable %}</el-tag>
+                        </template>
                     </el-table-column>
-                    <el-table-column
-                            prop="createTime"
-                            label="创建时间"
-                            width="180">
+                    <el-table-column label="操作">
+                        <template slot-scope="scope">
+                            <el-button-group>
+                                <el-tooltip class="item" effect="dark" content="编辑" placement="top">
+                                    <el-button type="primary" icon="el-icon-edit" size="mini"
+                                               @click="handleEdit(scope.$index, scope.row)"></el-button>
+                                </el-tooltip>
+                                <el-tooltip class="item" effect="dark" content="分享" placement="top">
+                                    <el-button type="primary" icon="el-icon-share" size="mini"
+                                               @click="handleEdit(scope.$index, scope.row)"></el-button>
+                                </el-tooltip>
+                                <el-tooltip class="item" effect="dark" content="删除" placement="top">
+                                    <el-button type="primary" icon="el-icon-delete" size="mini"
+                                               @click="handleEdit(scope.$index, scope.row)"></el-button>
+                                </el-tooltip>
+                            </el-button-group>
+                        </template>
                     </el-table-column>
                 </el-table>
+
+                <el-drawer
+                        title="详情"
+                        :visible.sync="drawer"
+                        direction="rtl"
+                        size="60%">
+                    <el-tabs v-model="activeName" @tab-click="handleClick">
+                        <el-tab-pane label="用户管理" name="first">用户管理</el-tab-pane>
+                        <el-tab-pane label="配置管理" name="second">配置管理</el-tab-pane>
+                        <el-tab-pane label="角色管理" name="third">角色管理</el-tab-pane>
+                        <el-tab-pane label="定时任务补偿" name="fourth">定时任务补偿</el-tab-pane>
+                    </el-tabs>
+                </el-drawer>
             </el-main>
+
             <el-footer>
                 <el-pagination
                         background
@@ -79,6 +121,7 @@
                         :total="totalNum">
                 </el-pagination>
             </el-footer>
+
         </el-container>
     </template>
 </div>
@@ -96,6 +139,8 @@
                 currentPage: 1,
                 currentSize: 10,
                 totalNum: 0,
+                drawer: false,
+                activeName: 'second'
             };
         },
         created() {
@@ -126,6 +171,13 @@
                     console.log('请求失败：' + resp.status + ',' + resp.statusText);
                 });
             },
+            handleEdit() {
+                const _this = this;
+                _this.drawer = true;
+            },
+            handleClick(tab, event) {
+                console.log(tab, event);
+            }
         }
     });
 </script>
