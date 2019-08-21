@@ -10,5 +10,6 @@ urlpatterns = [
     url(r'^homePage/$', views.homePage, name='homePage'),
     url(r'^eventReport/$', views.eventReport, name='eventReport'),
     url(r'^eventReport/getPageEvent$', views.getPageEvent),
+    url(r'^eventReport/getDataToExport$', views.getDataToExport),
     url(r'^$', views.index, name='index'),
 ]

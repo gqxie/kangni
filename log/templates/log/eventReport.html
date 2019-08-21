@@ -20,7 +20,7 @@
     <template>
         <div class="block">
             <el-date-picker
-                    v-model="value2"
+                    v-model="timevalue"
                     type="datetimerange"
                     :picker-options="pickerOptions"
                     range-separator="-"
@@ -32,17 +32,19 @@
             <el-button type="primary" icon="el-icon-search" @click="searchByTime">搜索</el-button>
             <el-divider direction="vertical"></el-divider>
             <el-button-group>
-                <el-button type="success">导出当前筛选数据<i class="el-icon-download el-icon--right"></i></el-button>
-                <el-button type="success">导出所有数据<i class="el-icon-download el-icon--right"></i></el-button>
+                <el-button type="success" @click="exportCurrent">导出当前筛选数据<i class="el-icon-download el-icon--right"></i>
+                </el-button>
+                <el-button type="success" @click="exportAll">导出所有数据<i class="el-icon-download el-icon--right"></i>
+                </el-button>
             </el-button-group>
         </div>
-        <export-excel v-if="list !== null" :list="list" :tHeader="tHeader" :tValue="tValue"></export-excel>
         <br>
         <el-table
                 :data="tableData"
                 stripe
                 border
-                style="width: 100%">
+                style="width: 100%"
+                id="eventTable">
             <el-table-column
                     type="index"
                     width="50">
@@ -111,10 +113,8 @@
 <!-- import JavaScript -->
 <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 <script src="https://unpkg.com/axios@0.19.0/dist/axios.min.js"></script>
-<script src="https://unpkg.com/browse/xlsx@0.15.1/xlsx.mini.js"></script>
-<script src="https://unpkg.com/browse/file-saver@2.0.2/dist/FileSaver.min.js"></script>
+<script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
 <script>
-
     new Vue({
         el: '#app',
         data() {
@@ -146,28 +146,12 @@
                         }
                     }]
                 },
-                value2: '',
+                timevalue: '',
                 tableData: [],
                 currentPage: 1,
                 currentSize: 10,
                 totalNum: 0,
-
-                list: [{
-                    "id": 1,
-                    "type": "ets",
-                    "content": "fd",
-                    "time": "fa",
-                    "count": "fda",
-                },
-                    {
-                        "id": 2,
-                        "type": "fa",
-                        "content": "fa",
-                        "time": "f",
-                        "count": "a",
-                    }],
-                tHeader: ['Id', '告警类型', '告警内容', '告警时间（段）', '告警次数'],
-                tValue: ['id', 'type', 'content', 'time', 'count'],
+                exportData: []
             };
         },
         created() {
@@ -177,8 +161,12 @@
         methods: {
             searchByTime() {
                 const _this = this;
-                startDateTime = _this.value2[0];
-                endDateTime = _this.value2[1];
+                startDateTime = '';
+                endDateTime = '';
+                if (_this.timevalue !== '' && _this.timevalue !== "undefined" && _this.timevalue != null) {
+                    startDateTime = _this.timevalue[0];
+                    endDateTime = _this.timevalue[1];
+                }
                 _this.getPageEvent(_this.currentPage, _this.currentSize, startDateTime, endDateTime)
             },
             getPageEvent(page, size, startDateTime, endDateTime) {
@@ -203,10 +191,78 @@
                 const _this = this;
                 _this.currentPage = val;
                 _this.getPageEvent(_this.currentPage, _this.currentSize, '', '');
+            },
+            exportCurrent() {
+                const _this = this;
+                startDateTime = '';
+                endDateTime = '';
+                if (_this.timevalue !== '' && _this.timevalue !== "undefined" && _this.timevalue != null) {
+                    startDateTime = _this.timevalue[0];
+                    endDateTime = _this.timevalue[1];
+                }
+                _this.getDataToExport(startDateTime, endDateTime).then(res => {
+                    res = _this.modifyExcelHeader(res);
+                    let ws = XLSX.utils.json_to_sheet(res);
+                    let wb = XLSX.utils.book_new();
+                    XLSX.utils.book_append_sheet(wb, ws, "sheet1");
+                    XLSX.writeFile(wb, "违章记录.xlsx");
+                    _this.$message.success("数据导出成功！");
+                }).catch(error => {
+                        _this.$message.error(error)
+                    }
+                );
+
+            },
+            getDataToExport(startDateTime, endDateTime) {
+                return new Promise(((resolve, reject) => {
+                    axios.get('getDataToExport', {
+                        params: {
+                            start: startDateTime, end: endDateTime
+                        }
+                    }).then(resp => {
+                        resolve(resp.data.data);
+                    }).catch(resp => {
+                        reject("数据导出失败！")
+                    });
+                }))
+            },
+            exportAll() {
+                const _this = this;
+                _this.getDataToExport('', '').then(res => {
+                    let ws = XLSX.utils.json_to_sheet(res);
+                    let wb = XLSX.utils.book_new();
+                    XLSX.utils.book_append_sheet(wb, ws, "sheet1");
+                    XLSX.writeFile(wb, "违章记录.xlsx");
+                    _this.$message.success("数据导出成功！");
+                }).catch(error => {
+                        _this.$message.error(error)
+                    }
+                );
+            },
+            modifyExcelHeader(array) {
+                let keyMap = {
+                    "eventId": "序号",
+                    "employeName": "违章人员",
+                    "districtName": "作业场所",
+                    "positionName": "作业单位",
+                    "eventType": "违章行为",
+                    "photo": "违章行为抓拍",
+                    "createTime": "违章时间"
+                };
+                for (let i = 0; i < array.length; i++) {
+                    let obj = array[i];
+                    for (let key in obj) {
+                        let newKey = keyMap[key];
+                        if (newKey) {
+                            obj[newKey] = obj[key];
+                            delete obj[key];
+                        }
+                    }
+                }
+                return array;
             }
         }
     });
-
 </script>
 </body>
 </html>

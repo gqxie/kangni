@@ -31,6 +31,7 @@ def eventReport(request):
     context = {}
     return render(request, 'log/eventReport.html', context)
 
+
 def getPageEvent(request):
     page = request.GET.get('page')
     size = request.GET.get('size')
@@ -63,7 +64,8 @@ def getPageEvent(request):
     criteria = ''
     search_by_time = len(start_date_time) > 0 and len(end_date_time) > 0
     if (search_by_time):
-        criteria = ' where rev.create_time > \'{}\' and rev.create_time < \'{}\' '.format(start_date_time, end_date_time)
+        criteria = ' where rev.create_time > \'{}\' and rev.create_time < \'{}\' '.format(start_date_time,
+                                                                                          end_date_time)
     sql = sql.format(criteria, start, size)
     cursor.execute(sql)
     rows = cursor.fetchall()
@@ -80,13 +82,60 @@ def getPageEvent(request):
 
     count_sql = '''select count(1) from resource_event {};'''
     count_criteria = ''
-    if(search_by_time):
+    if (search_by_time):
         count_criteria = ' where create_time > \'{}\' and create_time < \'{}\' '.format(start_date_time, end_date_time)
     count_sql = count_sql.format(count_criteria)
     cursor.execute(count_sql)
     count = cursor.fetchone()[0]
     rst = {
         'count': count,
+        'data': data_list
+    }
+    return JsonResponse(rst)
+
+
+def getDataToExport(request):
+    start_date_time = request.GET.get('start')
+    end_date_time = request.GET.get('end')
+    cursor = connection.cursor()
+    sql = """SELECT
+        rev.id eventId,
+        IFNULL(reem.`name`,'')employeName,
+        redi.`name` districtName,
+        repo.`name` positionName,
+        reet.`name` eventType,
+        rev.photo,
+        DATE_FORMAT( rev.create_time, '%Y-%m-%d %H:%i:%S' ) createTime 
+    FROM
+        resource_event rev
+        LEFT JOIN resource_eventtype reet ON rev.event_type_id = reet.id
+        LEFT JOIN resource_camera reca ON rev.camera_id = reca.id
+        LEFT JOIN resource_camerausetype recat ON reca.useType_id = recat.id
+        LEFT JOIN resource_position repo ON reca.position_id = repo.id
+        LEFT JOIN resource_district redi ON repo.district_id = redi.id 
+        LEFT join resource_employe reem on rev.employe_id=reem.id 
+        {}
+    ORDER BY
+        rev.update_time DESC;"""
+
+    criteria = ''
+    search_by_time = len(start_date_time) > 0 and len(end_date_time) > 0
+    if (search_by_time):
+        criteria = ' where rev.create_time > \'{}\' and rev.create_time < \'{}\' '.format(start_date_time,
+                                                                                          end_date_time)
+    sql = sql.format(criteria)
+    cursor.execute(sql)
+    rows = cursor.fetchall()
+    data_list = []
+    columns = ['eventId', 'employeName', 'districtName', 'positionName', 'eventType', 'photo', 'createTime']
+    for row in rows:
+        tmp_dict = {}
+        for col in columns:
+            tmp_dict[col] = row[columns.index(col)]
+            if 'photo' == col:
+                tmp_dict[col] = '%s%s%s' % (settings.DOMAIN_NAME, settings.MEDIA_URL, row[columns.index(col)])
+        data_list.append(tmp_dict)
+    rst = {
         'data': data_list
     }
     return JsonResponse(rst)
