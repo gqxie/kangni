@@ -22,6 +22,11 @@ def homePage(request):
     return render(request, 'log/homepage.html', context)
 
 
+def homePage2(request):
+    context = {}
+    return render(request, 'log/homePage2.html', context)
+
+
 def vuePage(request):
     context = {}
     return render(request, 'log/vuepage.html', context)
@@ -32,6 +37,49 @@ def eventReport(request):
     return render(request, 'log/eventReport.html', context)
 
 
+def getAllCamera(request):
+    page = request.GET.get('page')
+    size = request.GET.get('size')
+    start = int(size) * (int(page) - 1)
+    sql = '''SELECT
+        rec.`name` cameraName,
+        rec.ip,
+        DATE_FORMAT(
+            rec.online_time,
+            '%Y-%m-%d %H:%i:%S'
+        ) onlineTime,
+        DATE_FORMAT(
+            rec.create_time,
+            '%Y-%m-%d %H:%i:%S'
+        ) createTime,
+        recu.`name` cameraUseType
+    FROM
+        resource_camera rec
+    LEFT JOIN resource_camerausetype recu ON rec.useType_id = recu.id limit {},{};'''
+
+    sql = sql.format(start, size)
+    cursor = connection.cursor()
+    cursor.execute(sql)
+    rows = cursor.fetchall()
+    data_list = []
+    columns = ['cameraName', 'ip', 'onlineTime', 'createTime', 'cameraUseType']
+    for row in rows:
+        tmp_dict = {}
+        for col in columns:
+            tmp_dict[col] = row[columns.index(col)]
+        data_list.append(tmp_dict)
+
+    count_sql = '''select count(1) from resource_camera;'''
+    cursor.execute(count_sql)
+    count = cursor.fetchone()[0]
+    rst = {
+        'count': count,
+        'data': data_list
+    }
+    return JsonResponse(rst)
+
+
+# 获取违章记录
 def getPageEvent(request):
     page = request.GET.get('page')
     size = request.GET.get('size')

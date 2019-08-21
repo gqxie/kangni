@@ -264,7 +264,7 @@ LOGGING = {
 }
 
 
-SIMPLEUI_HOME_PAGE = 'log/homePage'
+SIMPLEUI_HOME_PAGE = 'log/homePage2'
 SIMPLEUI_HOME_ICON = 'fas fa-home'
 SIMPLEUI_ANALYSIS = True
 # 粒子动画效果

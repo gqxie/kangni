@@ -95,18 +95,13 @@
                     @current-change="handleCurrentChange"
                     :current-page="currentPage"
                     :page-sizes="[10, 20, 50, 100]"
-                    :page-size="10"
+                    :page-size="currentSize"
                     layout="total, sizes, prev, pager, next, jumper"
                     :total="totalNum">
             </el-pagination>
         </div>
 
     </template>
-</div>
-<table class="layui-hide" id="demo"></table>
-<div style="display: none;">
-    <table id="data_export">
-    </table>
 </div>
 <!-- import Vue before Element -->
 <script src="https://unpkg.com/vue/dist/vue.js"></script>
