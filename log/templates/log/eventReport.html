@@ -173,7 +173,7 @@
                     _this.tableData = resp.data.data;
                     _this.totalNum = resp.data.count;
                 }).catch(resp => {
-                    console.log('请求失败：' + resp.status + ',' + resp.statusText);
+                    _this.$message.error('请求失败！')
                 });
             },
             handleSizeChange(val) {

@@ -44,6 +44,7 @@ def getAllCamera(request):
     size = request.GET.get('size')
     start = int(size) * (int(page) - 1)
     sql = '''SELECT
+        rec.id,
         rec.`name` cameraName,
         rec.ip,
         DATE_FORMAT(
@@ -64,7 +65,7 @@ def getAllCamera(request):
     cursor.execute(sql)
     rows = cursor.fetchall()
     data_list = []
-    columns = ['cameraName', 'ip', 'onlineTime', 'createTime', 'cameraUseType']
+    columns = ['id', 'cameraName', 'ip', 'onlineTime', 'createTime', 'cameraUseType']
     for row in rows:
         tmp_dict = {}
         for col in columns:
@@ -83,6 +84,85 @@ def getAllCamera(request):
     rst = {
         'count': count,
         'data': data_list
+    }
+    return JsonResponse(rst)
+
+
+def getAllEventByCamera(request):
+    rst = {}
+    camera_id = request.GET.get('id')
+    if None == camera_id:
+        return JsonResponse(rst)
+    start_date_time = request.GET.get('start')
+    end_date_time = request.GET.get('end')
+    criteria = ''
+    search_by_time = len(start_date_time) > 0 and len(end_date_time) > 0
+    if (search_by_time):
+        start_date_time = '%s 00:00:00' % start_date_time
+        end_date_time = '%s 23:59:59' % end_date_time
+        criteria = ' and create_time > \'{}\' and create_time < \'{}\' '.format(start_date_time,
+                                                                                end_date_time)
+    cursor = connection.cursor()
+    month_sql = 'select DISTINCT SUBSTR(create_time,1,7) months from resource_event  where camera_id = {} {} ORDER BY create_time desc ;'
+    month_sql = month_sql.format(camera_id, criteria)
+    cursor.execute(month_sql)
+    month_rows = cursor.fetchall()
+    months = [i[0] for i in month_rows]
+
+    day_sql = 'select DISTINCT SUBSTR(create_time,1,10) days from resource_event  where camera_id = {} {} ORDER BY create_time desc ;'
+    day_sql = day_sql.format(camera_id, criteria)
+    cursor.execute(day_sql)
+    day_rows = cursor.fetchall()
+    days = [i[0] for i in day_rows]
+
+    event_sql = 'select photo,SUBSTR(create_time,1,23) eventTime from resource_event where camera_id = {} {} order by create_time desc;'
+    event_sql = event_sql.format(camera_id,criteria)
+    cursor.execute(event_sql)
+    event_rows = cursor.fetchall()
+
+    url = ''
+    if(len(event_rows)>0):
+        url = '%s%s%s' % (settings.DOMAIN_NAME, settings.MEDIA_URL, event_rows[0][0])
+
+    month_dict = {}
+    for month in months:
+        month_dict[month] = {}
+
+    for day in days:
+        # 2019-08
+        month_prefix = day[0:7]
+        days_dict = month_dict[month_prefix]
+        # 08-20
+        days_dict[day[5:10]] = []
+        month_dict[month_prefix] = days_dict
+
+
+    for row in event_rows:
+        photo = '%s%s%s' % (settings.DOMAIN_NAME, settings.MEDIA_URL, row[0])
+        event_time = row[1]
+
+        _month_prefix = event_time[0:7]
+        _day_prefix = event_time[5:10]
+        time_list = month_dict[_month_prefix][_day_prefix]
+        time_item = {
+            'label': event_time,
+            'url': photo
+        }
+        time_list.append(time_item)
+        month_dict[_month_prefix][_day_prefix] = time_list
+
+    data = []
+    for month_k,month_v in month_dict.items():
+        month_item = {
+            'label':month_k,
+            'children':[
+
+            ]
+        }
+        data.append(month_item)
+    rst = {
+        'url': url,
+        'data': []
     }
     return JsonResponse(rst)
 
@@ -355,7 +435,6 @@ def wc():
              847, 582, 555, 550, 462, 366, 360, 282, 273, 265]
     myWordCloud.add("", name, value, word_size_range=[20, 100])
     return myWordCloud.render_embed()
-
 
 # def bar3d_base():
 #     data = [(i, j, random.randint(0, 12)) for i in range(6) for j in range(24)]
