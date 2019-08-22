@@ -115,13 +115,13 @@ def getAllEventByCamera(request):
     day_rows = cursor.fetchall()
     days = [i[0] for i in day_rows]
 
-    event_sql = 'select photo,SUBSTR(create_time,1,23) eventTime from resource_event where camera_id = {} {} order by create_time desc;'
-    event_sql = event_sql.format(camera_id,criteria)
+    event_sql = 'select photo,SUBSTR(create_time,1,19) eventTime from resource_event where camera_id = {} {} order by create_time desc;'
+    event_sql = event_sql.format(camera_id, criteria)
     cursor.execute(event_sql)
     event_rows = cursor.fetchall()
 
     url = ''
-    if(len(event_rows)>0):
+    if (len(event_rows) > 0):
         url = '%s%s%s' % (settings.DOMAIN_NAME, settings.MEDIA_URL, event_rows[0][0])
 
     month_dict = {}
@@ -136,10 +136,11 @@ def getAllEventByCamera(request):
         days_dict[day[5:10]] = []
         month_dict[month_prefix] = days_dict
 
-
+    srcList = []
     for row in event_rows:
         photo = '%s%s%s' % (settings.DOMAIN_NAME, settings.MEDIA_URL, row[0])
         event_time = row[1]
+        srcList.append(photo)
 
         _month_prefix = event_time[0:7]
         _day_prefix = event_time[5:10]
@@ -152,17 +153,28 @@ def getAllEventByCamera(request):
         month_dict[_month_prefix][_day_prefix] = time_list
 
     data = []
-    for month_k,month_v in month_dict.items():
-        month_item = {
-            'label':month_k,
-            'children':[
+    for month_k, month_v in month_dict.items():
 
-            ]
+        day_list = []
+        for day_k, day_v in month_v.items():
+            item_list = []
+            for item in day_v:
+                item_list.append(item)
+            day_item = {
+                'label': day_k.replace('-', '月') + '日',
+                'children': item_list
+            }
+            day_list.append(day_item)
+
+        month_item = {
+            'label': month_k.replace('-', '年') + '月',
+            'children': day_list
         }
         data.append(month_item)
     rst = {
         'url': url,
-        'data': []
+        'data': data,
+        'srcList': srcList
     }
     return JsonResponse(rst)
 

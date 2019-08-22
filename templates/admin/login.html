@@ -1,12 +1,16 @@
 {% extends 'admin/login.html' %}
 {% block head %}
-    <link rel="icon" href="/media/favicon.ico">
+    <link rel="icon" href="/media/favicon_new.ico">
     <meta name="keywords" content="simpleui,django">
     <meta name="description" content="康尼设备与运行数据管理平台">
     <style type="text/css">
         .bg {
             background-image: url('/media/bg.gif');
         }
+
+        {% comment %}.header {
+            color: white;
+        }{% endcomment %}
     </style>
 {% endblock %}
 
@@ -14,6 +18,6 @@
 {% block header %}
     <div class="header">{{ site_header }}</div>
     <div>
-{#        <div>默认账号：guest，默认密码：123</div>#}
+        {#        <div>默认账号：guest，默认密码：123</div>#}
     </div>
 {% endblock %}

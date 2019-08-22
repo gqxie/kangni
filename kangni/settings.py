@@ -119,8 +119,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',  # 或者使用 mysql.connector.django
         'NAME': 'kangni',
         'USER': 'root',
-        'PASSWORD': 'mychebao',
-        'HOST': '188.188.22.164',
+        'PASSWORD': 'password',
+        'HOST': '127.0.0.1',
         'PORT': '3306',
     }
 }
@@ -308,7 +308,7 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # 关闭浏览器，则COOKIE失效
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-SIMPLEUI_LOGO = MEDIA_URL + 'logo_sfex.png'
+SIMPLEUI_LOGO = MEDIA_URL + 'logo_new.png'
 
 SIMPLEUI_HOME_INFO = False
 
