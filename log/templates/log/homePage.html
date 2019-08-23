@@ -38,7 +38,7 @@
             overflow: hidden;
         }
 
-        .el-aside{
+        .el-aside {
             height: 400px;
         }
 
@@ -285,7 +285,6 @@
                     url: 'getAllEventByCamera' + '?id=' + cameraId + '&start=' + startDate + '&end=' + endDate
                 }).then(function (resp) {
                     _this.treeData = resp.data.data;
-                    console.log(_this.treeData);
                     _this.url = resp.data.url;
                     _this.srcList = resp.data.srcList;
                 }).catch(resp => {
@@ -299,6 +298,19 @@
                 const _this = this;
                 if (data.url != undefined) {
                     _this.url = data.url;
+
+                    let srcListLength = _this.srcList.length;
+                    let i = srcListLength;
+                    let index = 0;
+                    while (i--) {
+                        if (_this.srcList[i] === _this.url) {
+                            index = i
+                        }
+                    }
+                    let preArray = _this.srcList.slice(0, index);
+                    let suffixArray = _this.srcList.slice(index, srcListLength);
+                    _this.srcList = suffixArray.concat(preArray);
+                    console.log(_this.srcList.length)
                 }
             },
             searchEvent() {
