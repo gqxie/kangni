@@ -10,6 +10,10 @@
     <title>首页</title>
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
 
+    {#    <link href="https://unpkg.com/video.js/dist/video-js.min.css" rel="stylesheet">#}
+    {#    <link rel="stylesheet" href="https://unpkg.com/browse/vue-video-player@5.0.2/src/custom-theme.css">#}
+
+
     <style>
         body {
             margin: 10px;
@@ -39,16 +43,8 @@
         }
 
         .el-aside {
-            height: 400px;
+            height: 500px;
         }
-
-        {% comment %}        i {
-                    font-size: 20px;
-                    font-weight: 600 !important;
-                    padding: 0 5px !important;
-                    background-color: transparent;
-                    color: #1890ff;
-                }{% endcomment %}
 
     </style>
 </head>
@@ -110,11 +106,33 @@
                             </el-tooltip>
                             <el-tooltip class="item" effect="dark" content="监控视频" placement="top">
                                 <i style="font-size: 20px;font-weight: 600 !important;padding: 0 5px !important;background-color: transparent;color: #1890ff;"
-                                   class="el-icon-video-camera" @click="handleEdit(scope.$index, scope.row)"></i>
+                                   class="el-icon-video-camera" @click="showVideo(scope.$index, scope.row)"></i>
                             </el-tooltip>
                         </template>
                     </el-table-column>
                 </el-table>
+
+                <el-dialog :title="dialogTitle" :visible.sync="dialogTableVisible">
+                    <video
+                            width="100%"
+                            height="100%"
+                            id="my-player"
+                            class="video-js"
+                            controls
+                            autoplay
+                            loop="loop"
+                            preload="auto"
+                            poster="//vjs.zencdn.net/v/oceans.png"
+                            data-setup='{}'>
+                        <source src="//vjs.zencdn.net/v/oceans.mp4" type="video/mp4">
+                        <source src="//vjs.zencdn.net/v/oceans.webm" type="video/webm">
+                        <source src="//vjs.zencdn.net/v/oceans.ogv" type="video/ogg">
+                        <p class="vjs-no-js">
+                            <a href="https://videojs.com/html5-video-support/" target="_blank">
+                            </a>
+                        </p>
+                    </video>
+                </el-dialog>
 
                 <el-drawer
                         :title="drawerTitle"
@@ -149,9 +167,9 @@
                             </el-aside>
                             <el-main>
                                 <el-image
-                                        style="width: 100%; height: 100%;overflow-y:visible"
+                                        style="width: 100%; height: 50%;overflow-y:visible"
                                         :src="url"
-                                        fit="fill"
+                                        fit="contain"
                                         :preview-src-list="srcList">
                                     <div slot="error" class="image-slot">
                                         <i class="el-icon-picture-outline"></i>
@@ -185,6 +203,10 @@
 <!-- import JavaScript -->
 <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 <script src="https://unpkg.com/axios@0.19.0/dist/axios.min.js"></script>
+
+
+{#<script src="https://unpkg.com/browse/video.js@7.6.0/dist/video.min.js"></script>#}
+{#<script src="https://unpkg.com/browse/vue-video-player@5.0.2/dist/vue-video-player.js"></script>#}
 <script>
     new Vue({
         el: '#app',
@@ -235,6 +257,11 @@
                 eventDate: '',
                 srcList: [],
                 currentCamera: '',
+
+                dialogTableVisible: false,
+                dialogTitle: '',
+
+
             };
         },
         created() {
@@ -267,7 +294,6 @@
             },
             handleDetail(index, row) {
                 const _this = this;
-                console.log(index, row.id);
                 _this.drawerTitle = '详情：' + row.cameraName;
                 _this.drawer = true;
             },
@@ -310,7 +336,6 @@
                     let preArray = _this.srcList.slice(0, index);
                     let suffixArray = _this.srcList.slice(index, srcListLength);
                     _this.srcList = suffixArray.concat(preArray);
-                    console.log(_this.srcList.length)
                 }
             },
             searchEvent() {
@@ -322,7 +347,14 @@
                     endDate = _this.eventDate[1];
                 }
                 _this.getAllEventByCamera(_this.currentCamera, startDate, endDate)
-            }
+            },
+
+            showVideo(index, row) {
+                const _this = this;
+                _this.dialogTitle = row.cameraName + '监控画面';
+                _this.dialogTableVisible = true
+            },
+
         }
     });
 </script>
