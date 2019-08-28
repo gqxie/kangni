@@ -28,6 +28,10 @@ def homePage(request):
     context = {}
     return render(request, 'log/homePage.html', context)
 
+def videoTest(request):
+    context = {}
+    return render(request, 'log/videotest.html', context)
+
 
 def vuePage(request):
     context = {}

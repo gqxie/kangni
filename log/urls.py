@@ -6,6 +6,7 @@ urlpatterns = [
     url(r'^vuePage/getAllEvent', views.getPageEvent, name='getPageEvent'),
     url(r'^vuePage/$', views.vuePage, name='vuePage'),
     # url(r'^homePage/$', views.homePageBak, name='homePage'),
+    url(r'^videoTest/$', views.videoTest, name='videoTest'),
     url(r'^homePage/$', views.homePage, name='homePage'),
     url(r'^homePage/getAllCamera$', views.getAllCamera),
     url(r'^homePage/getAllEventByCamera$', views.getAllEventByCamera),
