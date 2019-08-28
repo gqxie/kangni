@@ -27,7 +27,8 @@
         }
 
         .el-header {
-            padding: 0 0;
+            margin-left: 20px;
+            padding: 10px 0 0 0;
         }
 
         .el-drawer__body {
@@ -39,11 +40,53 @@
         }
 
         .el-main {
+            padding-top: 0;
             overflow: hidden;
         }
 
         .el-aside {
             height: 500px;
+        }
+
+        .h5video {
+            width: 576px;
+            height: 320px;
+            border: 1px solid black;
+            background-color: #000000;
+        }
+
+        .h5video1 {
+            width: 100%;
+            height: 100%;
+            border: 1px solid black;
+            background-color: #000000;
+        }
+
+        .h5videodiv {
+            display: inline-block;
+            position: relative;
+        }
+
+        .h5videodiv1 {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background-color: #000000;
+        }
+
+        .playpause {
+            background-image: url({% static 'h5stream/img/media_play_pause_resume.png' %});
+            background-repeat: no-repeat;
+            width: 25%;
+            height: 25%;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+            background-size: contain;
+            background-position: center;
         }
 
     </style>
@@ -52,65 +95,92 @@
 <div id="app">
     <template>
         <el-container>
+            <el-header>
+                <el-select v-model="selectorValue" placeholder="请选择摄像头">
+                    <el-option
+                            v-for="item in selectorOptions"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                    </el-option>
+                </el-select>
+                <el-button type="primary" @click="handleEventList">事件查看</el-button>
+            </el-header>
             <el-main>
-                <el-table
-                        stripe
-                        size="small"
-                        :data="tableData"
-                        style="width: 100%">
-                    <el-table-column
-                            type="selection"
-                            width="55">
-                    </el-table-column>
-                    <el-table-column
-                            type="index"
-                            width="50"
-                            label="序号">
-                    </el-table-column>
-                    <el-table-column
-                            prop="id"
-                            label="摄像头id"
-                            v-if="false">
-                    </el-table-column>
-                    <el-table-column
-                            prop="cameraName"
-                            label="名称"
-                            width="180">
-                    </el-table-column>
-                    <el-table-column
-                            prop="ip"
-                            label="ip地址"
-                            width="180">
-                    </el-table-column>
-                    <el-table-column
-                            prop="cameraUseType"
-                            label="用途"
-                            width="180">
-                    </el-table-column>
-                    <el-table-column
-                            prop="state"
-                            label="状态"
-                            width="120">
-                        <template slot-scope="scope">
-                            <el-tag
-                                    :type="scope.row.state === '在线' ? 'success' : 'danger'"
-                                    disable-transitions>{% templatetag openvariable %}
-                                scope.row.state {% templatetag closevariable %}</el-tag>
-                        </template>
-                    </el-table-column>
-                    <el-table-column label="操作">
-                        <template slot-scope="scope">
-                            <el-tooltip class="item" effect="dark" content="事件列表" placement="top">
-                                <i style="font-size: 20px;font-weight: 600 !important;padding: 0 5px !important;background-color: transparent;color: #1890ff;"
-                                   class="el-icon-date" @click="handleEventList(scope.$index, scope.row)"></i>
-                            </el-tooltip>
-                            <el-tooltip class="item" effect="dark" content="监控视频" placement="top">
-                                <i style="font-size: 20px;font-weight: 600 !important;padding: 0 5px !important;background-color: transparent;color: #1890ff;"
-                                   class="el-icon-video-camera" @click="showVideo(scope.$index, scope.row)"></i>
-                            </el-tooltip>
-                        </template>
-                    </el-table-column>
-                </el-table>
+                {#                <el-table#}
+                {#                        stripe#}
+                {#                        size="small"#}
+                {#                        :data="tableData"#}
+                {#                        style="width: 100%">#}
+                {#                    <el-table-column#}
+                {#                            type="selection"#}
+                {#                            width="55">#}
+                {#                    </el-table-column>#}
+                {#                    <el-table-column#}
+                {#                            type="index"#}
+                {#                            width="50"#}
+                {#                            label="序号">#}
+                {#                    </el-table-column>#}
+                {#                    <el-table-column#}
+                {#                            prop="id"#}
+                {#                            label="摄像头id"#}
+                {#                            v-if="false">#}
+                {#                    </el-table-column>#}
+                {#                    <el-table-column#}
+                {#                            prop="cameraName"#}
+                {#                            label="名称"#}
+                {#                            width="180">#}
+                {#                    </el-table-column>#}
+                {#                    <el-table-column#}
+                {#                            prop="ip"#}
+                {#                            label="ip地址"#}
+                {#                            width="180">#}
+                {#                    </el-table-column>#}
+                {#                    <el-table-column#}
+                {#                            prop="cameraUseType"#}
+                {#                            label="用途"#}
+                {#                            width="180">#}
+                {#                    </el-table-column>#}
+                {#                    <el-table-column#}
+                {#                            prop="state"#}
+                {#                            label="状态"#}
+                {#                            width="120">#}
+                {#                        <template slot-scope="scope">#}
+                {#                            <el-tag#}
+                {#                                    :type="scope.row.state === '在线' ? 'success' : 'danger'"#}
+                {#                                    disable-transitions>{% templatetag openvariable %}#}
+                {#                                scope.row.state {% templatetag closevariable %}</el-tag>#}
+                {#                        </template>#}
+                {#                    </el-table-column>#}
+                {#                    <el-table-column label="操作">#}
+                {#                        <template slot-scope="scope">#}
+                {#                            <el-tooltip class="item" effect="dark" content="事件列表" placement="top">#}
+                {#                                <i style="font-size: 20px;font-weight: 600 !important;padding: 0 5px !important;background-color: transparent;color: #1890ff;"#}
+                {#                                   class="el-icon-date" @click="handleEventList(scope.$index, scope.row)"></i>#}
+                {#                            </el-tooltip>#}
+                {#                            <el-tooltip class="item" effect="dark" content="监控视频" placement="top">#}
+                {#                                <i style="font-size: 20px;font-weight: 600 !important;padding: 0 5px !important;background-color: transparent;color: #1890ff;"#}
+                {#                                   class="el-icon-video-camera" @click="showVideo(scope.$index, scope.row)"></i>#}
+                {#                            </el-tooltip>#}
+                {#                        </template>#}
+                {#                    </el-table-column>#}
+                {#                </el-table>#}
+                <div class="h5videodiv">
+                    <video class="h5video" id="h5sVideo1" autoplay webkit-playsinline playsinline></video>
+                    <div class="playpause" id="playpause1"></div>
+                </div>
+                <div class="h5videodiv">
+                    <video class="h5video" id="h5sVideo2" autoplay webkit-playsinline playsinline></video>
+                    <div class="playpause" id="playpause2"></div>
+                </div>
+                <div class="h5videodiv">
+                    <video class="h5video" id="h5sVideo3" autoplay webkit-playsinline playsinline></video>
+                    <div class="playpause"></div>
+                </div>
+                <div class="h5videodiv">
+                    <video class="h5video" id="h5sVideo4" autoplay webkit-playsinline playsinline></video>
+                    <div class="playpause"></div>
+                </div>
 
                 <el-dialog :title="dialogTitle" :visible.sync="dialogTableVisible" @closed="dialogClosed">
                     <video
@@ -126,13 +196,13 @@
                             poster="{% static 'h5ssample.png' %}"
                             data-setup='{}'>
                         <source src="{% static 'h5ssample.mp4' %}" type="video/mp4">
-{#                        <source src="//vjs.zencdn.net/v/oceans.mp4" type="video/mp4">#}
-{#                        <source src="//vjs.zencdn.net/v/oceans.webm" type="video/webm">#}
-{#                        <source src="//vjs.zencdn.net/v/oceans.ogv" type="video/ogg">#}
-{#                        <p class="vjs-no-js">#}
-{#                            <a href="https://videojs.com/html5-video-support/" target="_blank">#}
-{#                            </a>#}
-{#                        </p>#}
+                        {#                        <source src="//vjs.zencdn.net/v/oceans.mp4" type="video/mp4">#}
+                        {#                        <source src="//vjs.zencdn.net/v/oceans.webm" type="video/webm">#}
+                        {#                        <source src="//vjs.zencdn.net/v/oceans.ogv" type="video/ogg">#}
+                        {#                        <p class="vjs-no-js">#}
+                        {#                            <a href="https://videojs.com/html5-video-support/" target="_blank">#}
+                        {#                            </a>#}
+                        {#                        </p>#}
                     </video>
                 </el-dialog>
 
@@ -185,16 +255,16 @@
             </el-main>
 
             <el-footer>
-                <el-pagination
-                        background
-                        @size-change="handleSizeChange"
-                        @current-change="handleCurrentChange"
-                        :current-page.sync="currentPage"
-                        :page-sizes="[10, 20, 50, 100]"
-                        :page-size="currentSize"
-                        layout="total, prev, pager, next, sizes"
-                        :total="totalNum">
-                </el-pagination>
+                {#                <el-pagination#}
+                {#                        background#}
+                {#                        @size-change="handleSizeChange"#}
+                {#                        @current-change="handleCurrentChange"#}
+                {#                        :current-page.sync="currentPage"#}
+                {#                        :page-sizes="[10, 20, 50, 100]"#}
+                {#                        :page-size="currentSize"#}
+                {#                        layout="total, prev, pager, next, sizes"#}
+                {#                        :total="totalNum">#}
+                {#                </el-pagination>#}
             </el-footer>
 
         </el-container>
@@ -206,6 +276,12 @@
 <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 <script src="https://unpkg.com/axios@0.19.0/dist/axios.min.js"></script>
 
+<script src="{% static 'h5stream/js/jquery-3.1.1.js' %}"></script>
+<script src="{% static 'h5stream/js/bootstrap.js' %}"></script>
+<script src="{% static 'h5stream/js/adapter.js' %}"></script>
+<script src="{% static 'h5stream/js/platform.js' %}"></script>
+<script src="{% static 'h5stream/js/h5splayer.js' %}"></script>
+<script src="{% static 'h5stream/js/h5splayerhelper.js' %}"></script>
 
 {#<script src="https://unpkg.com/browse/video.js@7.6.0/dist/video.min.js"></script>#}
 {#<script src="https://unpkg.com/browse/vue-video-player@5.0.2/dist/vue-video-player.js"></script>#}
@@ -263,12 +339,158 @@
                 dialogTableVisible: false,
                 dialogTitle: '',
 
+                selectorOptions: [{
+                    value: '1',
+                    label: '摄像头一'
+                }, {
+                    value: '2',
+                    label: '摄像头二'
+                }, {
+                    value: '3',
+                    label: '摄像头三'
+                }, {
+                    value: '4',
+                    label: '摄像头四'
+                }],
+                selectorValue: ''
 
             };
         },
         created() {
             const _this = this;
-            _this.getAllCamera(_this.currentPage, _this.currentSize)
+            _this.getAllCamera(_this.currentPage, _this.currentSize);
+        },
+        mounted() {
+            if (H5siOS() === true
+                || H5sSafariBrowser() === true) {
+                $('#h5sVideo1').prop("controls", true);
+                $('#h5sVideo2').prop("controls", true);
+                $('#h5sVideo3').prop("controls", true);
+                $('#h5sVideo4').prop("controls", true);
+            }
+            let conf1 = {
+                videoid: 'h5sVideo1',
+                protocol: window.location.protocol, //'http:' or 'https:'
+                host: window.location.host, //'localhost:8080'
+                rootpath: '/', // '/' or window.location.pathname
+                token: 'token1',
+                hlsver: 'v1', //v1 is for ts, v2 is for fmp4
+                session: 'c1782caf-b670-42d8-ba90-2244d0b0ee83' //session got from login
+            };
+
+            let conf2 = {
+                videoid: 'h5sVideo2',
+                //videodom: h5svideodom2,
+                protocol: window.location.protocol, //'http:' or 'https:'
+                host: window.location.host, //'localhost:8080'
+                rootpath: '/', // '/' or window.location.pathname
+                token: 'token1',
+                hlsver: 'v1', //v1 is for ts, v2 is for fmp4
+                session: 'c1782caf-b670-42d8-ba90-2244d0b0ee83' //session got from login
+            };
+
+            //If there has no videoid, the videodom can be the videodom. if there has videoid, just use the videoid
+            let h5svideodom3 = document.getElementById('h5sVideo3');
+            let conf3 = {
+                //videoid:'h5sVideo3',
+                videodom: h5svideodom3,
+                protocol: 'http:', //'http:' or 'https:'
+                host: 'localhost:8080', //'localhost:8080'
+                rootpath: '/', // '/' or window.location.pathname
+                token: 'token2',
+                hlsver: 'v1', //v1 is for ts, v2 is for fmp4
+                session: 'c1782caf-b670-42d8-ba90-2244d0b0ee83' //session got from login
+            };
+            let conf4 = {
+                videoid: 'h5sVideo4',
+                protocol: 'http:', //'http:' or 'https:'
+                host: 'localhost:8080', //'localhost:8080'
+                rootpath: '/', // '/' or window.location.pathname
+                token: 'token3',
+                hlsver: 'v1', //v1 is for ts, v2 is for fmp4
+                session: 'c1782caf-b670-42d8-ba90-2244d0b0ee83' //session got from login
+            };
+            let v1 = H5sPlayerCreate(conf1);
+            let v2 = new H5sPlayerRTC(conf2);
+            let v3 = H5sPlayerCreate(conf3);
+            let v4 = H5sPlayerCreate(conf4);
+
+            $('#h5sVideo1').parent().click(function () {
+                if ($(this).children(".h5video").get(0).paused) {
+                    if (v1 != null) {
+                        v1.disconnect();
+                        delete v1;
+                        v1 = null;
+                    }
+                    v1 = H5sPlayerCreate(conf1);
+                    v1.connect();
+                    $(this).children(".playpause").fadeOut();
+                } else {
+                    v1.disconnect();
+                    delete v1;
+                    v1 = null;
+                    $(this).children(".h5video").get(0).pause();
+                    $(this).children(".playpause").fadeIn();
+                }
+            });
+
+            $('#h5sVideo2').parent().click(function () {
+                if ($(this).children(".h5video").get(0).paused) {
+                    if (v2 != null) {
+                        v2.disconnect();
+                        delete v2;
+                        v2 = null;
+                    }
+                    v2 = new H5sPlayerRTC(conf2);
+                    v2.connect();
+                    $(this).children(".playpause").fadeOut();
+                } else {
+                    v2.disconnect();
+                    delete v2;
+                    v2 = null;
+                    $(this).children(".h5video").get(0).pause();
+                    $(this).children(".playpause").fadeIn();
+                }
+            });
+
+            $('#h5sVideo3').parent().click(function () {
+                if ($(this).children(".h5video").get(0).paused) {
+                    if (v3 != null) {
+                        v3.disconnect();
+                        delete v3;
+                        v3 = null;
+                    }
+
+                    v3 = H5sPlayerCreate(conf3);
+                    v3.connect();
+                    $(this).children(".playpause").fadeOut();
+                } else {
+                    v3.disconnect();
+                    delete v3;
+                    v3 = null;
+                    $(this).children(".h5video").get(0).pause();
+                    $(this).children(".playpause").fadeIn();
+                }
+            });
+
+            $('#h5sVideo4').parent().click(function () {
+                if ($(this).children(".h5video").get(0).paused) {
+                    if (v4 != null) {
+                        v4.disconnect();
+                        delete v4;
+                        v4 = null;
+                    }
+                    v4 = H5sPlayerCreate(conf4);
+                    v4.connect();
+                    $(this).children(".playpause").fadeOut();
+                } else {
+                    v4.disconnect();
+                    delete v4;
+                    v4 = null;
+                    $(this).children(".h5video").get(0).pause();
+                    $(this).children(".playpause").fadeIn();
+                }
+            });
         },
         methods: {
             handleSizeChange(val) {
@@ -299,11 +521,17 @@
                 _this.drawerTitle = '详情：' + row.cameraName;
                 _this.drawer = true;
             },
-            handleEventList(index, row) {
+            handleEventList() {
                 const _this = this;
-                _this.drawerTitle = '违章记录：' + row.cameraName;
+                let obj = {};
+                obj = _this.selectorOptions.find((item) => {
+                    return item.value === _this.selectorValue;
+                });
+                let labelName = '';
+                labelName = obj.label;
+                _this.drawerTitle = '违章记录：' + labelName;
                 _this.drawer = true;
-                _this.getAllEventByCamera(row.id, '', '');
+                _this.getAllEventByCamera(_this.selectorValue, '', '');
             },
             getAllEventByCamera(cameraId, startDate, endDate) {
                 const _this = this;
