@@ -25,8 +25,8 @@
         }
 
         .el-header {
-            margin-left: 20px;
-            padding: 10px 0 0 0;
+            margin-left: 0;
+            padding: 0 0;
         }
 
         .el-drawer__body {
@@ -56,9 +56,11 @@
                 <el-button @click="startVideo">接收视频</el-button>
                 <el-button @click="stopVideo">停止接收</el-button>
                 <div class="row">
-                    <div class="h5videodiv" id="h5videodiv1">
-                        <video class="h5video" id="h5sVideo1" autoplay webkit-playsinline playsinline></video>
-                    </div>
+                    <el-tooltip class="item" effect="dark" content="摄像头一" placement="top">
+                        <div class="h5videodiv" id="h5videodiv1">
+                            <video class="h5video" id="h5sVideo1" autoplay webkit-playsinline playsinline></video>
+                        </div>
+                    </el-tooltip>
                     <div class="h5videodiv" id="h5videodiv2">
                         <video class="h5video" id="h5sVideo2" autoplay webkit-playsinline playsinline></video>
                     </div>
