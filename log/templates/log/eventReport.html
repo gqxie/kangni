@@ -224,6 +224,7 @@
             exportAll() {
                 const _this = this;
                 _this.getDataToExport('', '').then(res => {
+                    res = _this.modifyExcelHeader(res);
                     let ws = XLSX.utils.json_to_sheet(res);
                     let wb = XLSX.utils.book_new();
                     XLSX.utils.book_append_sheet(wb, ws, "sheet1");
