@@ -107,19 +107,19 @@ def getAllEventByCamera(request):
         criteria = ' and create_time > \'{}\' and create_time < \'{}\' '.format(start_date_time,
                                                                                 end_date_time)
     cursor = connection.cursor()
-    month_sql = 'select DISTINCT SUBSTR(create_time,1,7) months from resource_event  where camera_id = {} {} ORDER BY create_time desc ;'
+    month_sql = 'select DISTINCT SUBSTR(create_time,1,7) months from resource_event  where camera_id = {} {} ORDER BY months desc ;'
     month_sql = month_sql.format(camera_id, criteria)
     cursor.execute(month_sql)
     month_rows = cursor.fetchall()
     months = [i[0] for i in month_rows]
 
-    day_sql = 'select DISTINCT SUBSTR(create_time,1,10) days from resource_event  where camera_id = {} {} ORDER BY create_time desc ;'
+    day_sql = 'select DISTINCT SUBSTR(create_time,1,10) days from resource_event  where camera_id = {} {} ORDER BY days desc ;'
     day_sql = day_sql.format(camera_id, criteria)
     cursor.execute(day_sql)
     day_rows = cursor.fetchall()
     days = [i[0] for i in day_rows]
 
-    event_sql = 'select photo,SUBSTR(create_time,1,19) eventTime from resource_event where camera_id = {} {} order by create_time desc;'
+    event_sql = 'select photo,SUBSTR(create_time,1,19) eventTime from resource_event where camera_id = {} {} order by eventTime desc;'
     event_sql = event_sql.format(camera_id, criteria)
     cursor.execute(event_sql)
     event_rows = cursor.fetchall()
