@@ -19,8 +19,8 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.static import serve
 
-admin.site.site_title = '电力施工智能安全督查装备'
-admin.site.site_header = '电力施工智能安全督查装备'
+admin.site.site_title = '现场作业安全管控平台'
+admin.site.site_header = '现场作业安全管控平台'
 urlpatterns = [
     path('', admin.site.urls),
     url(r'^.*media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
