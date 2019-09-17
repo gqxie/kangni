@@ -239,7 +239,7 @@
         },
         created() {
             const _this = this;
-            _this.getAllCamera(_this.currentPage, _this.currentSize);
+            {#_this.getAllCamera(_this.currentPage, _this.currentSize);#}
         },
         mounted() {
             const _this = this;
@@ -278,15 +278,13 @@
             handleEventList() {
                 const _this = this;
                 _this.dialogVisible = true;
-                _this.updateDialogVideoTag();
-                try {
+                setTimeout(function () {
+                    _this.updateDialogVideoTag();
                     _this.v5 = new H5sPlayerWS(_this.conf5);
-                } catch (e) {
-                    console.log(e)
-                }
-                if(null != _this.v5){
-                    _this.v5.connect();
-                }
+                    if (null != _this.v5) {
+                        _this.v5.connect();
+                    }
+                }, 0)
             },
             updateDialogVideoTag() {
                 $('#h5videodiv5').empty();
