@@ -8,7 +8,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <title>违章记录报告</title>
-    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="{% static 'element/index.css' %}">
     <style>
         body {
             margin: 10px;
@@ -104,11 +104,11 @@
     </template>
 </div>
 <!-- import Vue before Element -->
-<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="{% static 'vue/vue.js' %}"></script>
 <!-- import JavaScript -->
-<script src="https://unpkg.com/element-ui/lib/index.js"></script>
-<script src="https://unpkg.com/axios@0.19.0/dist/axios.min.js"></script>
-<script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+<script src="{% static 'element/index.js' %}"></script>
+<script src="{% static 'axios/axios.min.js' %}"></script>
+<script src="{% static 'xlsx/xlsx.full.min.js' %}"></script>
 <script>
     new Vue({
         el: '#app',

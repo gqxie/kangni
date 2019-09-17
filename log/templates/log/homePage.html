@@ -8,8 +8,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <title>首页</title>
-    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
-
+    <link rel="stylesheet" href="{% static 'element/index.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'h5stream/css/h5splayer.css' %}"/>
 
     <style>
@@ -57,7 +56,7 @@
                 <el-button @click="stopVideo">停止接收</el-button>
                 <div class="row">
                     <el-tooltip class="item" effect="dark" content="摄像头一" placement="top">
-                        <div class="h5videodiv" id="h5videodiv1">
+                        <div class="h5videodiv" id="h5videodiv1" @click="handleEventList">
                             <video class="h5video" id="h5sVideo1" autoplay webkit-playsinline playsinline></video>
                         </div>
                     </el-tooltip>
@@ -77,117 +76,56 @@
                 <el-dialog
                         title=""
                         :visible.sync="dialogVisible"
-                        fullscreen="true"
+                        fullscreen
+                        @close="dialogClose"
                         center>
                     <el-container>
-                        <el-divider></el-divider>
-                        <el-header>
-                            <div class="block" style="margin-top: 10px;">
-                                <el-date-picker
-                                        v-model="eventDate"
-                                        type="daterange"
-                                        align="right"
-                                        unlink-panels
-                                        range-separator="至"
-                                        start-placeholder="开始日期"
-                                        end-placeholder="结束日期"
-                                        :picker-options="pickerOptions"
-                                        value-format="yyyy-MM-dd">
-                                </el-date-picker>
-                                <el-button type="primary" icon="el-icon-search" size="medium" @click="searchEvent">
-                                    搜索
-                                </el-button>
+                        <el-main>
+                            <div class="h5videodiv" id="h5videodiv5">
+                                <video class="h5video" id="h5sVideo5" autoplay
+                                       webkit-playsinline playsinline></video>
                             </div>
-                        </el-header>
-                        <el-divider></el-divider>
-                        <el-container>
-                            <el-aside width="240px">
-                                <el-tree :data="treeData" :props="defaultProps" @node-click="handleNodeClick"
-                                         accordion icon-class="el-icon-time"></el-tree>
-                            </el-aside>
-                            <el-main>
-                                <el-image
-                                        style="width: 100%; height: 50%;overflow-y:visible"
-                                        :src="url"
-                                        fit="contain"
-                                        :preview-src-list="srcList">
-                                    <div slot="error" class="image-slot">
-                                        <i class="el-icon-picture-outline"></i>
-                                    </div>
-                                </el-image>
-                            </el-main>
-                        </el-container>
-                        <el-divider></el-divider>
+                        </el-main>
+                        <el-aside width="350px">
+                            <el-card class="box-card">
+                                <div v-for="o in 4" :key="o" class="text item">
+                                    {% templatetag openvariable %} '列表内容 ' + o{% templatetag closevariable %}
+                                </div>
+                            </el-card>
+                            <el-card class="box-card">
+                                <div v-for="o in 4" :key="o" class="text item">
+                                    {% templatetag openvariable %} '列表内容 ' + o{% templatetag closevariable %}
+                                </div>
+                            </el-card>
+                            <el-card class="box-card">
+                                <div v-for="o in 4" :key="o" class="text item">
+                                    {% templatetag openvariable %} '列表内容 ' + o{% templatetag closevariable %}
+                                </div>
+                            </el-card>
+                        </el-aside>
                     </el-container>
                 </el-dialog>
-
-               {% comment %} <el-drawer
-                        :title="drawerTitle"
-                        :visible.sync="drawer"
-                        direction="rtl"
-                        size="60%">
-                    <el-container>
-                        <el-divider></el-divider>
-                        <el-header>
-                            <div class="block" style="margin-top: 10px;">
-                                <el-date-picker
-                                        v-model="eventDate"
-                                        type="daterange"
-                                        align="right"
-                                        unlink-panels
-                                        range-separator="至"
-                                        start-placeholder="开始日期"
-                                        end-placeholder="结束日期"
-                                        :picker-options="pickerOptions"
-                                        value-format="yyyy-MM-dd">
-                                </el-date-picker>
-                                <el-button type="primary" icon="el-icon-search" size="medium" @click="searchEvent">
-                                    搜索
-                                </el-button>
-                            </div>
-                        </el-header>
-                        <el-divider></el-divider>
-                        <el-container>
-                            <el-aside width="240px">
-                                <el-tree :data="treeData" :props="defaultProps" @node-click="handleNodeClick"
-                                         accordion icon-class="el-icon-time"></el-tree>
-                            </el-aside>
-                            <el-main>
-                                <el-image
-                                        style="width: 100%; height: 50%;overflow-y:visible"
-                                        :src="url"
-                                        fit="contain"
-                                        :preview-src-list="srcList">
-                                    <div slot="error" class="image-slot">
-                                        <i class="el-icon-picture-outline"></i>
-                                    </div>
-                                </el-image>
-                            </el-main>
-                        </el-container>
-                        <el-divider></el-divider>
-                    </el-container>
-                </el-drawer>{% endcomment %}
             </el-main>
 
             <el-footer>
-                <el-pagination
-                        background
-                        @current-change="handleCurrentChange"
-                        :current-page.sync="currentPage"
-                        :page-size="currentSize"
-                        layout="total, prev, pager, next"
-                        :total="totalNum">
-                </el-pagination>
+                {#                <el-pagination#}
+                {#                        background#}
+                {#                        @current-change="handleCurrentChange"#}
+                {#                        :current-page.sync="currentPage"#}
+                {#                        :page-size="currentSize"#}
+                {#                        layout="total, prev, pager, next"#}
+                {#                        :total="totalNum">#}
+                {#                </el-pagination>#}
             </el-footer>
 
         </el-container>
     </template>
 </div>
 <!-- import Vue before Element -->
-<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="{% static 'vue/vue.js' %}"></script>
 <!-- import JavaScript -->
-<script src="https://unpkg.com/element-ui/lib/index.js"></script>
-<script src="https://unpkg.com/axios@0.19.0/dist/axios.min.js"></script>
+<script src="{% static 'element/index.js' %}"></script>
+<script src="{% static 'axios/axios.min.js' %}"></script>
 
 <script src="{% static 'h5stream/js/jquery-3.1.1.js' %}"></script>
 <script src="{% static 'h5stream/js/bootstrap.js' %}"></script>
@@ -196,8 +134,6 @@
 <script src="{% static 'h5stream/js/h5splayer.js' %}"></script>
 <script src="{% static 'h5stream/js/h5splayerhelper.js' %}"></script>
 
-{#<script src="https://unpkg.com/browse/video.js@7.6.0/dist/video.min.js"></script>#}
-{#<script src="https://unpkg.com/browse/vue-video-player@5.0.2/dist/vue-video-player.js"></script>#}
 <script>
     new Vue({
         el: '#app',
@@ -210,14 +146,12 @@
                 drawer: false,
                 activeName: 'second',
                 drawerTitle: '',
-
                 treeData: [],
                 defaultProps: {
                     children: 'children',
                     label: 'label'
                 },
                 url: '',
-
                 pickerOptions: {
                     shortcuts: [{
                         text: '最近一周',
@@ -249,8 +183,7 @@
                 srcList: [],
                 currentCameraId: '',
                 currentCameraName: '',
-
-                dialogVisible:false,
+                dialogVisible: false,
 
                 conf1: {
                     videoid: 'h5sVideo1',
@@ -259,7 +192,7 @@
                     rootpath: '/', // '/' or window.location.pathname
                     token: 'token2',
                     hlsver: 'v1', //v1 is for ts, v2 is for fmp4
-                    session: 'c1782caf-b670-42d8-ba90-2244d0b0ee83' //session got from login
+                    session: null //session got from login
                 },
                 conf2: {
                     videoid: 'h5sVideo2',
@@ -268,7 +201,7 @@
                     rootpath: '/', // '/' or window.location.pathname
                     token: 'token2',
                     hlsver: 'v1', //v1 is for ts, v2 is for fmp4
-                    session: 'c1782caf-b670-42d8-ba90-2244d0b0ee83' //session got from login
+                    session: null //session got from login
                 },
                 conf3: {
                     videoid: 'h5sVideo3',
@@ -277,7 +210,7 @@
                     rootpath: '/', // '/' or window.location.pathname
                     token: 'token2',
                     hlsver: 'v1', //v1 is for ts, v2 is for fmp4
-                    session: 'c1782caf-b670-42d8-ba90-2244d0b0ee83' //session got from login
+                    session: null //session got from login
                 },
                 conf4: {
                     videoid: 'h5sVideo4',
@@ -286,12 +219,22 @@
                     rootpath: '/', // '/' or window.location.pathname
                     token: 'token3',
                     hlsver: 'v1', //v1 is for ts, v2 is for fmp4
-                    session: 'c1782caf-b670-42d8-ba90-2244d0b0ee83' //session got from login
+                    session: null //session got from login
+                },
+                conf5: {
+                    videoid: 'h5sVideo5',
+                    protocol: window.location.protocol, //'http:' or 'https:'
+                    host: window.location.host + ':8080', //'localhost:8080'
+                    rootpath: '/', // '/' or window.location.pathname
+                    token: 'token2',
+                    hlsver: 'v1', //v1 is for ts, v2 is for fmp4
+                    session: null //session got from login
                 },
                 v1: null,
                 v2: null,
                 v3: null,
-                v4: null
+                v4: null,
+                v5: null
             };
         },
         created() {
@@ -300,13 +243,13 @@
         },
         mounted() {
             const _this = this;
-            $('#h5videodiv1').attr('index', 1);
+            {% comment %}$('#h5videodiv1').attr('index', 1);
             $('#h5videodiv1').attr('camera', '摄像头一');
             $('#h5videodiv1').click(function () {
                 _this.currentCameraId = $('#h5videodiv1').attr('index');
                 _this.currentCameraName = $('#h5videodiv1').attr('camera');
                 _this.handleEventList();
-            });
+            });{% endcomment %}
         },
         methods: {
             handleSizeChange(val) {
@@ -334,9 +277,25 @@
             },
             handleEventList() {
                 const _this = this;
-                {#_this.drawerTitle = '违章记录：' + _this.currentCameraName;#}
                 _this.dialogVisible = true;
-                _this.getAllEventByCamera(_this.currentCameraId, '', '');
+                _this.updateDialogVideoTag();
+                try {
+                    _this.v5 = new H5sPlayerWS(_this.conf5);
+                } catch (e) {
+                    console.log(e)
+                }
+                if(null != _this.v5){
+                    _this.v5.connect();
+                }
+            },
+            updateDialogVideoTag() {
+                $('#h5videodiv5').empty();
+                $('#h5videodiv5').html('<video class="h5video" id="h5sVideo5" style="width: 100%;height: auto;"  autoplay webkit-playsinline playsinline></video>');
+            },
+            dialogClose() {
+                const _this = this;
+                _this.v5.disconnect();
+                delete _this.v5;
             },
             getAllEventByCamera(cameraId, startDate, endDate) {
                 const _this = this;

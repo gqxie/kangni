@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+{% load static %}
 <style>
     div {
         display: flex
@@ -13,11 +14,11 @@
 <head>
     <meta charset="utf-8">
     <title>ECharts</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.2.1/echarts.min.js"></script>
-    <script src="https://echarts.baidu.com/dist/echarts-gl.min.js"></script>
-    <script type="text/javascript " src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
-    <script type="text/javascript " src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>
-    <script src="https://cdn.bootcss.com/wordcloud2.js/1.1.0/wordcloud2.min.js"></script>
+    <script src="{% static 'echarts/echarts.min.js' %}"></script>
+    <script src="{% static 'echarts/echarts-gl.min.js' %}"></script>
+    <script src="{% static 'echarts/china.js' %}"></script>
+    <script src="{% static 'echarts/world.js' %}"></script>
+    <script src="{% static 'echarts/wordcloud2.min.js' %}"></script>
 </head>
 
 <body>
