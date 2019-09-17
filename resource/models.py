@@ -50,8 +50,7 @@ class CameraUseType(models.Model):
 class Camera(models.Model):
     name = models.CharField(max_length=128, verbose_name='名称', help_text='摄像头名称', null=False, blank=False,
                             db_index=True)
-    useType = models.ForeignKey(CameraUseType, on_delete=models.SET_NULL, blank=False, null=True, verbose_name='用途',
-                                db_index=True)
+    useType = models.ManyToManyField(CameraUseType,  verbose_name='用途')
     ip = models.CharField(max_length=100, verbose_name='ip地址', help_text='摄像头的ip地址', blank=True, null=True)
     username = models.CharField(max_length=128, verbose_name='用户名', help_text='摄像头连接用户名', null=False, default='',
                                 blank=False,
