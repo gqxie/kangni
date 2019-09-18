@@ -121,10 +121,10 @@ def getLatestEventByCamera(request):
     data = []
     for event in event_rows:
         item = {
-            'district': event[0],
-            'position': event[1],
-            'eventType': event[2],
-            'createTime': event[3]
+            'district': event[0] if len(event[0]) > 0 else '',
+            'position': event[1] if len(event[1]) > 0 else '',
+            'eventType': event[2] if len(event[2]) > 0 else '',
+            'createTime': event[3] if len(event[3]) > 0 else ''
         }
         data.append(item)
     rst = {
