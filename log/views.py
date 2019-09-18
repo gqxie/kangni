@@ -28,6 +28,7 @@ def homePage(request):
     context = {}
     return render(request, 'log/homePage.html', context)
 
+
 def videoTest(request):
     context = {}
     return render(request, 'log/videotest.html', context)
@@ -88,6 +89,46 @@ def getAllCamera(request):
     rst = {
         'count': count,
         'data': data_list
+    }
+    return JsonResponse(rst)
+
+
+def getLatestEventByCamera(request):
+    rst = {}
+    camera_id = request.GET.get('id')
+    if None == camera_id:
+        return JsonResponse(rst)
+
+    cursor = connection.cursor()
+    sql = '''SELECT
+            red.`name` district,
+            rep.`name` position,
+            ree.`name` eventType,
+            SUBSTR(rev.create_time, 1, 19) createTime
+        FROM
+            resource_event rev
+        LEFT JOIN resource_camera rec ON rev.camera_id = rec.id
+        LEFT JOIN resource_eventtype ree ON rev.event_type_id = ree.id
+        LEFT JOIN resource_position rep ON rec.position_id = rep.id
+        LEFT JOIN resource_district red ON rep.district_id = red.id
+        WHERE
+            rev.camera_id = 1
+        ORDER BY
+            rev.id DESC
+        LIMIT 4'''
+    cursor.execute(sql)
+    event_rows = cursor.fetchall()
+    data = []
+    for event in event_rows:
+        item = {
+            'district': event[0],
+            'position': event[1],
+            'eventType': event[2],
+            'createTime': event[3]
+        }
+        data.append(item)
+    rst = {
+        'data': data
     }
     return JsonResponse(rst)
 
