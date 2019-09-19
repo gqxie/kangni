@@ -1,16 +1,18 @@
 # Create your views here.
 # encoding: utf-8
 import datetime
-import random
+import os
 
 from django.conf import settings
 from django.db import connection
 from django.http import JsonResponse
 from django.shortcuts import render
-from django.utils import timezone
-from example.commons import Faker
 from pyecharts import options as opts
-from pyecharts.charts import Bar, Pie, WordCloud, Line, Timeline, Bar3D, Grid
+from pyecharts.charts import Bar, Pie, WordCloud, Line, Timeline
+from pyecharts.globals import _CurrentConfig
+
+# 在局域网环境下防止echarts调用远程js
+_CurrentConfig.ONLINE_HOST = settings.STATIC_URL + 'echarts/'
 
 
 def index(request):
@@ -237,7 +239,6 @@ def getPageEvent(request):
         IFNULL(reem.`name`,'')employeName,
         reet.`name` eventType,
         reca.`name` cameraName,
-        recat.`name` cameraUseType,
         redi.`name` districtName,
         repo.`name` positionName,
         rev.photo,
@@ -246,7 +247,6 @@ def getPageEvent(request):
         resource_event rev
         LEFT JOIN resource_eventtype reet ON rev.event_type_id = reet.id
         LEFT JOIN resource_camera reca ON rev.camera_id = reca.id
-        LEFT JOIN resource_camerausetype recat ON reca.useType_id = recat.id
         LEFT JOIN resource_position repo ON reca.position_id = repo.id
         LEFT JOIN resource_district redi ON repo.district_id = redi.id 
         LEFT join resource_employe reem on rev.employe_id=reem.id 
@@ -264,7 +264,7 @@ def getPageEvent(request):
     rows = cursor.fetchall()
     data_list = []
     columns = ['eventId', 'employeName', 'eventType', 'cameraName',
-               'cameraUseType', 'districtName', 'positionName', 'photo', 'createTime']
+               'districtName', 'positionName', 'photo', 'createTime']
     for row in rows:
         tmp_dict = {}
         for col in columns:
@@ -303,7 +303,6 @@ def getDataToExport(request):
         resource_event rev
         LEFT JOIN resource_eventtype reet ON rev.event_type_id = reet.id
         LEFT JOIN resource_camera reca ON rev.camera_id = reca.id
-        LEFT JOIN resource_camerausetype recat ON reca.useType_id = recat.id
         LEFT JOIN resource_position repo ON reca.position_id = repo.id
         LEFT JOIN resource_district redi ON repo.district_id = redi.id 
         LEFT join resource_employe reem on rev.employe_id=reem.id 
