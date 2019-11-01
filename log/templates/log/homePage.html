@@ -81,7 +81,7 @@
                         center>
                     <el-container>
                         <el-main>
-                            <div class="h5videodiv" id="h5videodiv5">
+                            <div class="h5videodiv" id="h5videodiv5" style="width: 100%;">
                                 <video class="h5video" id="h5sVideo5" autoplay
                                        webkit-playsinline playsinline></video>
                             </div>
@@ -222,7 +222,7 @@
                     protocol: window.location.protocol, //'http:' or 'https:'
                     host: window.location.host + ':8080', //'localhost:8080'
                     rootpath: '/', // '/' or window.location.pathname
-                    token: 'token1',
+                    token: 'token2',
                     hlsver: 'v1', //v1 is for ts, v2 is for fmp4
                     session: null //session got from login
                 },
@@ -231,7 +231,8 @@
                 v3: null,
                 v4: null,
                 v5: null,
-                latestEvent: []
+                latestEvent: [],
+                timer: ''
             };
         },
         created() {
@@ -282,7 +283,8 @@
                     if (null != _this.v5) {
                         _this.v5.connect();
                     }
-                }, 0)
+                }, 0);
+                _this.timer = setInterval(this.getLatestEventByCamera(1), 60000);
             },
             updateDialogVideoTag() {
                 $('#h5videodiv5').empty();
@@ -292,6 +294,7 @@
                 const _this = this;
                 _this.v5.disconnect();
                 delete _this.v5;
+                clearInterval(_this.timer);
             },
             getLatestEventByCamera(cameraId) {
                 const _this = this;
